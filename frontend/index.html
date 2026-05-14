@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Fast TikTok, Instagram, and YouTube video downloader. Download videos without watermark in seconds.">
+  <meta name="keywords" content="TikTok downloader, Instagram reel saver, YouTube downloader, video save, no watermark">
+  <meta name="author" content="TAEO">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://example.com/">
+  <meta property="og:title" content="TAEO - Fast Video Downloader">
+  <meta property="og:description" content="Download TikTok, Instagram & YouTube videos instantly. No watermark, no ads, completely free.">
+  <meta property="og:image" content="https://example.com/og-image.jpg">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://example.com/">
+  <meta property="twitter:title" content="TAEO - Fast Video Downloader">
+  <meta property="twitter:description" content="Download TikTok, Instagram & YouTube videos instantly.">
+  <meta property="twitter:image" content="https://example.com/og-image.jpg">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://example.com/">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%23000' width='180' height='180'/><text x='50%' y='50%' font-size='80' fill='%23fff' text-anchor='middle' dy='.3em' font-weight='bold'>▶</text></svg>">
+
+  <title>TAEO - Download TikTok, Instagram & YouTube Videos</title>
+  <link rel="stylesheet" href="/style.css">
+
+  <!-- JSON-LD FAQ Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is it safe to use TAEO Downloader?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, TAEO is completely safe. We use industry-standard security practices and never store your personal data. Downloads are temporary and auto-deleted after 24 hours."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What platforms are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "TAEO supports TikTok, Instagram Reels, and YouTube videos. Just paste the URL and click download."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I download videos without watermark?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! TAEO automatically downloads videos with the highest quality available, often without watermarks."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is there a file size limit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Videos up to 1GB are supported. Larger files will be rejected automatically."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long are downloads available?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Downloads are available for 10 minutes via the presigned URL. After that, you need to download again."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <!-- Ad Banner - Top -->
+  <div class="ad-banner ad-top">
+    <div id="ad-top-slot">
+      <!-- PropellerAds code here -->
+      <script async="async" data-cfasync="false" src="//cdn.propellerads.com/YOUR_PROPELLERADS_CODE.js"></script>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">⚡ TAEO</h1>
+      <p class="hero-subtitle">Fast & Easy Video Downloader</p>
+      <p class="hero-description">Download TikTok, Instagram & YouTube videos instantly. No watermark, no ads, completely free.</p>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+    <!-- Download Section -->
+    <section class="download-section">
+      <div class="input-group">
+        <input 
+          type="url" 
+          id="urlInput" 
+          class="url-input" 
+          placeholder="Paste TikTok, Instagram or YouTube URL here..."
+          autocomplete="off"
+        >
+        <button id="downloadBtn" class="download-btn">Download</button>
+      </div>
+
+      <!-- Loading UI -->
+      <div id="loadingUI" class="loading-ui hidden">
+        <div class="spinner"></div>
+        <p class="loading-text">Downloading your video...</p>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Error UI -->
+      <div id="errorUI" class="error-ui hidden">
+        <p class="error-title">❌ Error</p>
+        <p id="errorMessage" class="error-message"></p>
+        <button class="retry-btn" onclick="document.getElementById('errorUI').classList.add('hidden'); document.getElementById('urlInput').focus();">Try Again</button>
+      </div>
+
+      <!-- Success UI -->
+      <div id="successUI" class="success-ui hidden">
+        <p class="success-title">✅ Ready to Download</p>
+        <p id="successFilename" class="success-filename"></p>
+        <a id="downloadLink" href="#" class="success-link" target="_blank">📥 Download File</a>
+        <button class="download-again-btn" onclick="resetForm();">Download Another</button>
+      </div>
+    </section>
+
+    <!-- Ad Section - Middle -->
+    <div class="ad-section ad-middle">
+      <div id="ad-middle-slot">
+        <!-- Adsterra code here -->
+        <script src="//cdn.adsterra.com/YOUR_ADSTERRA_CODE.js"></script>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <section class="features">
+      <div class="feature-item">
+        <span class="feature-icon">⚡</span>
+        <h3>Lightning Fast</h3>
+        <p>Download videos in seconds</p>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">🎥</span>
+        <h3>High Quality</h3>
+        <p>Best available quality</p>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✂️</span>
+        <h3>No Watermark</h3>
+        <p>Clean downloads</p>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">🔒</span>
+        <h3>Secure</h3>
+        <p>Your privacy protected</p>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+      <h2>Frequently Asked Questions</h2>
+      
+      <div class="faq-item">
+        <button class="faq-question">What platforms do you support?</button>
+        <div class="faq-answer">
+          <p>We support TikTok, Instagram (including Reels), and YouTube. Simply paste the video URL and click download.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Is TAEO free to use?</button>
+        <div class="faq-answer">
+          <p>Yes! TAEO is completely free. We support ourselves through non-intrusive advertising.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">How long are downloads stored?</button>
+        <div class="faq-answer">
+          <p>Downloaded files are available for 10 minutes. After that, you can download again by submitting the URL.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">What's the maximum file size?</button>
+        <div class="faq-answer">
+          <p>Videos up to 1GB in size are supported. If a video exceeds this limit, you'll receive an error message.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Does TAEO store my data?</button>
+        <div class="faq-answer">
+          <p>No. TAEO does not store any personal information. Your download is temporary and auto-deleted after 24 hours from our servers.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Is downloading copyrighted content legal?</button>
+        <div class="faq-answer">
+          <p>Only download content that you have permission to download. TAEO is not responsible for misuse. Always respect copyright and creator rights.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Legal Notice -->
+    <div class="legal-notice">
+      <p>⚠️ <strong>Copyright Notice:</strong> Only download content that you have permission to download or that is made available for download by the copyright holder. TAEO is a tool and is not responsible for how you use it. Always respect creator rights and copyright laws.</p>
+    </div>
+  </main>
+
+  <!-- Ad Section - Footer -->
+  <div class="ad-section ad-footer">
+    <div id="ad-footer-slot">
+      <!-- Additional ad code -->
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="/privacy.html">Privacy Policy</a>
+        <span class="separator">•</span>
+        <a href="/terms.html">Terms of Service</a>
+        <span class="separator">•</span>
+        <a href="/contact.html">Contact</a>
+      </div>
+      <p class="footer-copyright">&copy; 2024 TAEO. All rights reserved.</p>
+      <p class="footer-disclaimer">TAEO is not affiliated with TikTok, Instagram, or YouTube.</p>
+    </div>
+  </footer>
+
+  <script src="/main.js"></script>
+</body>
+</html>
