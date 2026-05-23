@@ -140,7 +140,12 @@ function mapYtDlpErrorMessage(errorMessage) {
 
 app.use(cors({ origin: '*', methods: ['GET', 'POST', 'OPTIONS'], credentials: false })); // CORS 설정
 
-// 다국어 경로 대응: /ko, /ja 등으로 접속해도 index.html을 보냄
+// 광고 및 사이트 인증 파일들을 위한 루트 경로 허용 (sw.js 등)
+app.get(['/sw.js', '/verification.txt', '/verification.html'], (req, res) => {
+  res.sendFile(req.path.split('/').pop(), { root: '../frontend' });
+});
+
+// 정적 파일 서빙
 app.use(express.static('../frontend'));
 
 // 다국어 서브경로에서 새로고침 시에도 index.html을 서빙하도록 설정
