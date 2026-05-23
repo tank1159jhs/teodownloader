@@ -12,12 +12,13 @@ const app = express();
 app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(express.json()); // for parsing application/json
 
 // =================================
 // 설정
 // =================================
+const SUPPORTED_LANGS = ['en', 'ko', 'ja'];
 const WHITELISTED_DOMAINS = ['tiktok.com', 'instagram.com', 'youtube.com'];
 const MAX_FILE_SIZE = 1 * 1024 * 1024 * 1024; // 1GB
 const CONCURRENT_JOBS = 3;
@@ -30,11 +31,14 @@ const RATE_LIMIT_MAX = 3; // 1분에 최대 3회
 // =================================
 let activeJobs = 0;
 const ipRequestMap = new Map(); // IP별 요청 추적
-const tempFiles = new Set(); // 임시 파일 추적
 
 // =================================
 // 유틸리티 함수
 // =================================
+function generateRandomId() {
+  return crypto.randomBytes(8).toString('hex');
+}
+
 function getClientIp(req) {
   return req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket.remoteAddress;
 }
@@ -70,16 +74,6 @@ function isWhitelistedDomain(hostname) {
   return WHITELISTED_DOMAINS.some(domain =>
     hostname === domain || hostname.endsWith('.' + domain)
   );
-}
-
-function generateRandomId() {
-  return crypto.randomBytes(8).toString('hex');
-}
-
-function getFileExtension(metadata) {
-  if (metadata.ext) return metadata.ext;
-  if (metadata.format_id?.includes('video')) return 'mp4';
-  return 'mp4';
 }
 
 function executeYtDlp(args, timeout = DOWNLOAD_TIMEOUT) {
@@ -121,18 +115,6 @@ function executeYtDlp(args, timeout = DOWNLOAD_TIMEOUT) {
   });
 }
 
-async function cleanupTempFile(filePath) {
-  if (tempFiles.has(filePath)) {
-    try {
-      await fs.promises.unlink(filePath);
-      tempFiles.delete(filePath);
-      console.log(`[CLEANUP] Deleted: ${filePath}`);
-    } catch (err) {
-      console.error(`[CLEANUP ERROR] Failed to delete ${filePath}: ${err.message}`);
-    }
-  }
-}
-
 function mapYtDlpErrorMessage(errorMessage) {
   if (!errorMessage) return '다운로드에 실패했습니다. URL을 확인해 주세요.';
   if (errorMessage.includes('There is no video in this post')) {
@@ -156,10 +138,16 @@ function mapYtDlpErrorMessage(errorMessage) {
   return errorMessage.length > 200 ? errorMessage.substring(0, 200) : errorMessage;
 }
 
+app.use(cors({ origin: '*', methods: ['GET', 'POST', 'OPTIONS'], credentials: false })); // CORS 설정
 
-app.use(express.json());
-app.use(cors({ origin: '*', methods: ['GET', 'POST', 'OPTIONS'], credentials: false }));
+// 다국어 경로 대응: /ko, /ja 등으로 접속해도 index.html을 보냄
 app.use(express.static('../frontend'));
+
+// 다국어 서브경로에서 새로고침 시에도 index.html을 서빙하도록 설정
+app.get(['/en', '/ko', '/ja'], (req, res) => {
+  res.sendFile('index.html', { root: '../frontend' });
+});
+
 app.use((req, res, next) => {
   if (req.path.startsWith('/api/')) {
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -181,7 +169,6 @@ app.get('/api/health', (req, res) => {
 // 메인 다운로드 엔드포인트
 app.post('/api/download', async (req, res) => {
   const clientIp = getClientIp(req);
-  let downloadedFilePath = null;
   try {
     if (!checkRateLimit(clientIp)) {
       return res.status(429).json({ error: 'TOO_MANY_REQUESTS', message: 'Too many requests. Please wait 1 minute.' });
@@ -208,7 +195,7 @@ app.post('/api/download', async (req, res) => {
     }
     console.log(`[DOWNLOAD] Started from ${clientIp}: ${url}`);
     const randomId = generateRandomId();
-    // 1. yt-dlp --dump-json으로 메타데이터 가져오기
+    // 1. yt-dlp --dump-json으로 메타데이터 가져오기 (파일 확장자 및 제목 확인용)
     const { stdout: metadataJson } = await executeYtDlp([
       url,
       '--dump-json',
@@ -227,32 +214,47 @@ app.post('/api/download', async (req, res) => {
       activeJobs--;
       return res.status(400).json({ error: 'FILE_TOO_LARGE', message: `File size (${Math.round(fileSize / 1024 / 1024)}MB) exceeds 1GB limit` });
     }
-      // 3. 파일 다운로드 (항상 mp4로 저장)
-    downloadedFilePath = `/tmp/${randomId}.mp4`;
-    tempFiles.add(downloadedFilePath);
-    await executeYtDlp([
+
+    // 3. 스트리밍 헤더 설정 (Content-Length는 스트리밍 시 부정확할 수 있으므로 제외 권장)
+    const filename = (metadata.title || randomId).replace(/[\\/:*?"<>|]/g, "").substring(0, 80);
+    res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}.mp4"`);
+    res.setHeader('Content-Type', 'video/mp4');
+    res.setHeader('Transfer-Encoding', 'chunked');
+
+    // 4. yt-dlp 실행
+    // fragmented mp4 플래그를 사용하여 스트리밍(pipe) 시에도 재생 가능한 MP4를 생성합니다.
+    const ytdlpArgs = [
       url,
-      '-f', 'bv*+ba/b',
-      '-o', downloadedFilePath,
+      '-f', 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+      '--merge-output-format', 'mp4',
+      '-o', '-',
       '--no-warnings',
       '--quiet',
-      '--merge-output-format', 'mp4',
-    ], DOWNLOAD_TIMEOUT);
-    if (!fs.existsSync(downloadedFilePath)) {
-      activeJobs--;
-      return res.status(500).json({ error: 'DOWNLOAD_FAILED', message: 'Downloaded file not found' });
+      '--no-part',
+      '--postprocessor-args', 'ffmpeg:-movflags frag_keyframe+empty_moov'
+    ];
+
+    if (process.env.YTDLP_PROXY) {
+      ytdlpArgs.push('--proxy', process.env.YTDLP_PROXY);
     }
-    // 4. 서버에서 직접 파일 전송
-    const filename = `${metadata.title || randomId}.mp4`.substring(0, 100);
-    res.download(downloadedFilePath, filename, (err) => {
-      setImmediate(() => cleanupTempFile(downloadedFilePath));
-      activeJobs--;
-      if (err) {
-        console.error('[ERROR] File send error:', err);
-      } else {
-        console.log(`[SUCCESS] File sent: ${filename}`);
-      }
+
+    const downloadProc = spawn('yt-dlp', ytdlpArgs);
+    downloadProc.stdout.pipe(res);
+
+    downloadProc.stderr.on('data', (data) => {
+      console.error(`[STREAM-ERR] ${data.toString()}`);
     });
+
+    downloadProc.on('close', (code) => {
+      activeJobs--;
+      console.log(`[STREAM-END] Finished: ${filename} with code ${code}`);
+    });
+
+    // 클라이언트가 연결을 끊으면 프로세스 종료
+    req.on('close', () => {
+      if (downloadProc) downloadProc.kill();
+    });
+
   } catch (err) {
     const errorMessage = err.message || 'Unknown error';
     const userMessage = mapYtDlpErrorMessage(errorMessage);
@@ -271,7 +273,6 @@ app.post('/api/download', async (req, res) => {
     }
     activeJobs--;
     res.status(statusCode).json({ error: errorCode, message: userMessage });
-    if (downloadedFilePath) setImmediate(() => cleanupTempFile(downloadedFilePath));
   }
 });
 
