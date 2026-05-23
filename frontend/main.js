@@ -101,7 +101,7 @@ function resetForm() {
 
 function openAdPage() {
   // Monetag 또는 Adsterra에서 발급받은 Smartlink/Direct Link URL
-  const SMARTLINK_URL = 'https://모네태그_스마트링크_주소'; 
+  const SMARTLINK_URL = 'https://omg10.com/4/11046155'; 
   
   // 새 탭으로 광고 실행
   const adWindow = window.open(SMARTLINK_URL, '_blank');

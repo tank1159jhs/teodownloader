@@ -51,9 +51,10 @@ Cloudflare R2 (임시 저장소 + Presigned URL)
 
 ```bash
 cd /Users/systemi/TaeoDownloader
-cd /var/www/app/server
-npm install
-npm start
+npm install --prefix server
+cp server/.env.example server/.env
+# .env 파일 수정 (S3 credentials 입력)
+npm start --prefix server
 # 브라우저: http://localhost:3000
 ```
 

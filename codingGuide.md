@@ -22,8 +22,8 @@
 ## 3. 기술 아키텍처
 
 ### Infrastructure
-- **CDN/Security**: Cloudflare (DNS, SSL Full-Strict, WAF, Rate Limit)
-- **Compute**: Oracle Cloud OCI (Ubuntu 22.04 LTS 권장)
+- Security: Local Firewalld, Nginx Reverse Proxy
+- Compute: Oracle Cloud OCI (Oracle Linux 8)
 - **Storage**: No local storage (Direct stream via stdout pipe)
 - **Stack**: Node.js (Express), yt-dlp, ffmpeg, Nginx, PM2
 
