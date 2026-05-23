@@ -23,6 +23,7 @@ html, body {
   color: #fff;
   padding: 2.5rem 1rem 1.5rem 1rem;
   text-align: center;
+  position: relative;
 }
 .hero-title {
   font-size: 2.5rem;
@@ -39,6 +40,23 @@ html, body {
   font-weight: 400;
   margin: 0 0 0.5rem 0;
 }
+
+.lang-switcher {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+.lang-switcher select {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  outline: none;
+  cursor: pointer;
+}
+.lang-switcher select option { color: #000; }
 
 .container {
   max-width: 480px;

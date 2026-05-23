@@ -1,8 +1,10 @@
-# TAEO Downloader 운영 가이드
+# TAEO Downloader Operation Guide (OCI)
 
-## 1. EC2 생성
-- Ubuntu 22.04 LTS 권장
-- 최소 t3.small (2GB RAM)
+## 1. 인스턴스 정보
+- OS: Oracle Linux 8 (RHEL 기반)
+- 유저: `opc`
+- IP: `158.101.152.9`
+- 경로: `/var/www/app`
 
 ## 2. SSH 접속
 ```
@@ -41,12 +43,20 @@ sudo systemctl restart nginx
 ## 8. R2 생성
 - Cloudflare 대시보드 → R2 → 버킷 생성
 - API 토큰 발급 (S3 호환)
+## 6. OCI 방화벽 설정 (Firewalld)
+보안 리스트 외에 인스턴스 내부 방화벽을 열어줘야 합니다.
+```bash
+sudo firewall-cmd --permanent --add-port=80/tcp
+sudo firewall-cmd --permanent --add-port=443/tcp
+sudo firewall-cmd --reload
+```
 
 ## 9. Lifecycle Rule 설정
 - R2 버킷 → Lifecycle → 1일 후 자동 삭제 규칙 추가
 
 ## 10. Cloudflare 연결
 - 도메인 Cloudflare에 추가
+## 7. Cloudflare 연결
 - Proxy(구름 아이콘) ON
 
 ## 11. DNS 설정
@@ -59,6 +69,7 @@ sudo systemctl restart nginx
 ## 13. 브라우저 테스트
 - https://<도메인> 접속
 - 다운로드 정상 동작 확인
+## 8. 운영/모니터링 팁
 
 ---
 

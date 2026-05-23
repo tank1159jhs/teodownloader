@@ -3,32 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Fast TikTok, Instagram, and YouTube video downloader. Download videos without watermark in seconds.">
+  <meta name="description" id="metaDescription" content="Fast and free TikTok, Instagram, and YouTube video downloader without watermark.">
   <meta name="keywords" content="TikTok downloader, Instagram reel saver, YouTube downloader, video save, no watermark">
   <meta name="author" content="TAEO">
   <meta name="theme-color" content="#000000">
 
+  <!-- SEO: 다국어 연동 (hreflang) - 구글 검색 결과 자동 전환의 핵심 -->
+  <link rel="alternate" hreflang="x-default" href="https://YOUR_DOMAIN.com/" />
+  <link rel="alternate" hreflang="ko" href="https://YOUR_DOMAIN.com/ko" />
+  <link rel="alternate" hreflang="ja" href="https://YOUR_DOMAIN.com/ja" />
+  <link rel="alternate" hreflang="en" href="https://YOUR_DOMAIN.com/en" />
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://example.com/">
+  <meta property="og:url" content="https://YOUR_DOMAIN.com/">
   <meta property="og:title" content="TAEO - Fast Video Downloader">
-  <meta property="og:description" content="Download TikTok, Instagram & YouTube videos instantly. No watermark, no ads, completely free.">
-  <meta property="og:image" content="https://example.com/og-image.jpg">
+  <meta property="og:description" content="Download TikTok, Instagram & YouTube videos instantly. No watermark, completely free.">
+  <meta property="og:image" content="https://YOUR_DOMAIN.com/og-image.jpg">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://example.com/">
+  <meta property="twitter:url" content="https://YOUR_DOMAIN.com/">
   <meta property="twitter:title" content="TAEO - Fast Video Downloader">
-  <meta property="twitter:description" content="Download TikTok, Instagram & YouTube videos instantly.">
-  <meta property="twitter:image" content="https://example.com/og-image.jpg">
+  <meta property="twitter:description" content="Download TikTok, Instagram & YouTube videos instantly. No watermark.">
+  <meta property="twitter:image" content="https://YOUR_DOMAIN.com/og-image.jpg">
 
   <!-- Canonical -->
-  <link rel="canonical" href="https://example.com/">
+  <link rel="canonical" href="https://YOUR_DOMAIN.com/">
 
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%23000' width='180' height='180'/><text x='50%' y='50%' font-size='80' fill='%23fff' text-anchor='middle' dy='.3em' font-weight='bold'>▶</text></svg>">
 
-  <title>TAEO - Download TikTok, Instagram & YouTube Videos</title>
+  <title id="pageTitle">TAEO - Fast Video Downloader</title>
   <link rel="stylesheet" href="/style.css">
 
   <!-- JSON-LD FAQ Schema -->
@@ -72,9 +78,9 @@
       {
         "@type": "Question",
         "name": "How long are downloads available?",
-        "acceptedAnswer": {
+        "acceptedAnswer": { 
           "@type": "Answer",
-          "text": "Downloads are available for 10 minutes via the presigned URL. After that, you need to download again."
+          "text": "Downloads are processed instantly and files are deleted from the server immediately after your download completes."
         }
       }
     ]
@@ -82,20 +88,25 @@
   </script>
 </head>
 <body>
-  <!-- Ad Banner - Top -->
-  <div class="ad-banner ad-top">
-    <div id="ad-top-slot">
-      <!-- PropellerAds code here -->
-      <script async="async" data-cfasync="false" src="//cdn.propellerads.com/YOUR_PROPELLERADS_CODE.js"></script>
-    </div>
-  </div>
+  <!-- Adsterra Social Bar (High CTR) -->
+  <script type='text/javascript' src='//애드스테라에서_준_스크립트_주소.js'></script>
+
+  <!-- Monetag Popunder (High CPM) -->
+  <script>(function(s,u,z,p){s.src=u,s.setAttribute('data-zone',z),p.appendChild(s);})(document.createElement('script'),'https://inklinkor.com/tag.min.js',발급받은_모네태그_존ID,document.body||document.documentElement)</script>
 
   <!-- Hero Section -->
   <header class="hero">
+    <div class="lang-switcher">
+      <select id="langSelect">
+        <option value="en">English</option>
+        <option value="ko">한국어</option>
+        <option value="ja">日本語</option>
+      </select>
+    </div>
     <div class="hero-content">
-      <h1 class="hero-title">⚡ TAEO</h1>
-      <p class="hero-subtitle">Fast & Easy Video Downloader</p>
-      <p class="hero-description">Download TikTok, Instagram & YouTube videos instantly. No watermark, no ads, completely free.</p>
+      <h1 class="hero-title" data-i18n="hero_title">⚡ TAEO</h1>
+      <p class="hero-subtitle" data-i18n="hero_subtitle">Fast & Easy Video Downloader</p>
+      <p class="hero-description" data-i18n="hero_description">Download TikTok, Instagram & YouTube videos instantly. No watermark, completely free.</p>
     </div>
   </header>
 
@@ -108,16 +119,16 @@
           type="url" 
           id="urlInput" 
           class="url-input" 
-          placeholder="Paste TikTok, Instagram or YouTube URL here..."
+          data-i18n-placeholder="input_placeholder"
           autocomplete="off"
         >
-        <button id="downloadBtn" class="download-btn">Download</button>
+        <button id="downloadBtn" class="download-btn" data-i18n="download_btn">Download</button>
       </div>
 
       <!-- Loading UI -->
       <div id="loadingUI" class="loading-ui hidden">
         <div class="spinner"></div>
-        <p class="loading-text">Downloading your video...</p>
+        <p class="loading-text" data-i18n="loading_text">Downloading your video...</p>
         <div class="progress-bar">
           <div class="progress-fill"></div>
         </div>
@@ -125,25 +136,24 @@
 
       <!-- Error UI -->
       <div id="errorUI" class="error-ui hidden">
-        <p class="error-title">❌ Error</p>
+        <p class="error-title" data-i18n="error_title">❌ Error</p>
         <p id="errorMessage" class="error-message"></p>
-        <button class="retry-btn" onclick="document.getElementById('errorUI').classList.add('hidden'); document.getElementById('urlInput').focus();">Try Again</button>
+        <button class="retry-btn" data-i18n="retry_btn" onclick="document.getElementById('errorUI').classList.add('hidden'); document.getElementById('urlInput').focus();">Try Again</button>
       </div>
 
       <!-- Success UI -->
       <div id="successUI" class="success-ui hidden">
-        <p class="success-title">✅ Ready to Download</p>
+        <p class="success-title" data-i18n="success_title">✅ Ready to Download</p>
         <p id="successFilename" class="success-filename"></p>
-        <a id="downloadLink" href="#" class="success-link" target="_blank">📥 Download File</a>
-        <button class="download-again-btn" onclick="resetForm();">Download Another</button>
+        <button class="download-again-btn" data-i18n="download_again_btn" onclick="resetForm();">Download Another</button>
       </div>
     </section>
 
     <!-- Ad Section - Middle -->
     <div class="ad-section ad-middle">
       <div id="ad-middle-slot">
-        <!-- Adsterra code here -->
-        <script src="//cdn.adsterra.com/YOUR_ADSTERRA_CODE.js"></script>
+        <!-- Adsterra code here --> 
+        <script src="//cdn.adsterra.com/YOUR_ADSTERRA_CODE"></script>
       </div>
     </div>
 
@@ -151,76 +161,76 @@
     <section class="features">
       <div class="feature-item">
         <span class="feature-icon">⚡</span>
-        <h3>Lightning Fast</h3>
-        <p>Download videos in seconds</p>
+        <h3 data-i18n="feature_fast_title">Lightning Fast</h3>
+        <p data-i18n="feature_fast_desc">Download videos in seconds</p>
       </div>
       <div class="feature-item">
         <span class="feature-icon">🎥</span>
-        <h3>High Quality</h3>
-        <p>Best available quality</p>
+        <h3 data-i18n="feature_hq_title">High Quality</h3>
+        <p data-i18n="feature_hq_desc">Best available quality</p>
       </div>
       <div class="feature-item">
         <span class="feature-icon">✂️</span>
-        <h3>No Watermark</h3>
-        <p>Clean downloads</p>
+        <h3 data-i18n="feature_wm_title">No Watermark</h3>
+        <p data-i18n="feature_wm_desc">Clean downloads</p>
       </div>
       <div class="feature-item">
         <span class="feature-icon">🔒</span>
-        <h3>Secure</h3>
-        <p>Your privacy protected</p>
+        <h3 data-i18n="feature_sec_title">Secure</h3>
+        <p data-i18n="feature_sec_desc">Your privacy protected</p>
       </div>
     </section>
 
     <!-- FAQ Section -->
     <section class="faq">
-      <h2>Frequently Asked Questions</h2>
+      <h2 data-i18n="faq_title">Frequently Asked Questions</h2>
       
       <div class="faq-item">
-        <button class="faq-question">What platforms do you support?</button>
+        <button class="faq-question" data-i18n="faq_q1">What platforms do you support?</button>
         <div class="faq-answer">
-          <p>We support TikTok, Instagram (including Reels), and YouTube. Simply paste the video URL and click download.</p>
+          <p data-i18n="faq_a1">We support TikTok, Instagram (including Reels), and YouTube. Simply paste the video URL and click download.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">Is TAEO free to use?</button>
+        <button class="faq-question" data-i18n="faq_q2">Is TAEO free to use?</button>
         <div class="faq-answer">
-          <p>Yes! TAEO is completely free. We support ourselves through non-intrusive advertising.</p>
+          <p data-i18n="faq_a2">Yes! TAEO is completely free. We support ourselves through non-intrusive advertising.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">How long are downloads stored?</button>
+        <button class="faq-question" data-i18n="faq_q3">How long are downloads stored?</button>
         <div class="faq-answer">
-          <p>Downloaded files are available for 10 minutes. After that, you can download again by submitting the URL.</p>
+          <p data-i18n="faq_a3">Downloaded files are deleted immediately after the transfer is complete to ensure your privacy and save server space.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">What's the maximum file size?</button>
+        <button class="faq-question" data-i18n="faq_q4">What's the maximum file size?</button>
         <div class="faq-answer">
-          <p>Videos up to 1GB in size are supported. If a video exceeds this limit, you'll receive an error message.</p>
+          <p data-i18n="faq_a4">Videos up to 1GB in size are supported. If a video exceeds this limit, you'll receive an error message.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">Does TAEO store my data?</button>
+        <button class="faq-question" data-i18n="faq_q5">Does TAEO store my data?</button>
         <div class="faq-answer">
-          <p>No. TAEO does not store any personal information. Your download is temporary and auto-deleted after 24 hours from our servers.</p>
+          <p data-i18n="faq_a5">No. TAEO does not store any personal information. Your download is temporary and auto-deleted after 24 hours from our servers.</p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">Is downloading copyrighted content legal?</button>
+        <button class="faq-question" data-i18n="faq_q6">Is downloading copyrighted content legal?</button>
         <div class="faq-answer">
-          <p>Only download content that you have permission to download. TAEO is not responsible for misuse. Always respect copyright and creator rights.</p>
+          <p data-i18n="faq_a6">Only download content that you have permission to download. TAEO is not responsible for misuse. Always respect copyright and creator rights.</p>
         </div>
       </div>
     </section>
 
     <!-- Legal Notice -->
     <div class="legal-notice">
-      <p>⚠️ <strong>Copyright Notice:</strong> Only download content that you have permission to download or that is made available for download by the copyright holder. TAEO is a tool and is not responsible for how you use it. Always respect creator rights and copyright laws.</p>
+      <p data-i18n="legal_notice">⚠️ <strong>Copyright Notice:</strong> Only download content that you have permission to download or that is made available for download by the copyright holder. TAEO is a tool and is not responsible for how you use it. Always respect creator rights and copyright laws.</p>
     </div>
   </main>
 
