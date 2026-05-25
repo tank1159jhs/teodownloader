@@ -3,7 +3,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { spawn } from 'child_process';
 import { URL } from 'url';
-import fs from 'fs';
 import crypto from 'crypto';
 
 dotenv.config();
@@ -18,7 +17,6 @@ app.use(express.json()); // for parsing application/json
 // =================================
 // 설정
 // =================================
-const SUPPORTED_LANGS = ['en', 'ko', 'ja'];
 const WHITELISTED_DOMAINS = ['tiktok.com', 'instagram.com', 'youtube.com'];
 const MAX_FILE_SIZE = 1 * 1024 * 1024 * 1024; // 1GB
 const CONCURRENT_JOBS = 3;
@@ -180,6 +178,9 @@ app.get('/api/health', (req, res) => {
 // 메인 다운로드 엔드포인트
 app.post('/api/download', async (req, res) => {
   const clientIp = getClientIp(req);
+  
+  let jobFinished = false;
+
   try {
     if (!checkRateLimit(clientIp)) {
       return res.status(429).json({ error: 'TOO_MANY_REQUESTS', message: 'Too many requests. Please wait 1 minute.' });
@@ -188,20 +189,39 @@ app.post('/api/download', async (req, res) => {
       return res.status(429).json({ error: 'SERVER_BUSY', message: 'Server is busy. Please try again later.' });
     }
     activeJobs++;
+
     const { url } = req.body;
     if (!url || typeof url !== 'string') {
-      activeJobs--;
+      if (!jobFinished) {
+
+        activeJobs--;
+
+        jobFinished = true;
+
+      }
       return res.status(400).json({ error: 'INVALID_REQUEST', message: 'URL is required' });
     }
     const validation = validateUrl(url);
     if (!validation.valid) {
-      activeJobs--;
+      if (!jobFinished) {
+
+        activeJobs--;
+
+        jobFinished = true;
+
+      }
       return res.status(400).json({ error: 'INVALID_URL', message: validation.error });
     }
     const parsedUrl = validation.url;
     const hostname = parsedUrl.hostname;
     if (!isWhitelistedDomain(hostname)) {
-      activeJobs--;
+      if (!jobFinished) {
+
+        activeJobs--;
+
+        jobFinished = true;
+
+      }
       return res.status(400).json({ error: 'DOMAIN_NOT_SUPPORTED', message: `${hostname} is not supported. Supported domains: ${WHITELISTED_DOMAINS.join(', ')}` });
     }
     console.log(`[DOWNLOAD] Started from ${clientIp}: ${url}`);
@@ -216,62 +236,122 @@ app.post('/api/download', async (req, res) => {
     try {
       metadata = JSON.parse(metadataJson);
     } catch (err) {
-      activeJobs--;
+      if (!jobFinished) {
+
+        activeJobs--;
+
+        jobFinished = true;
+
+      }
       return res.status(400).json({ error: 'INVALID_VIDEO', message: 'Unable to parse video information' });
     }
     // 2. 파일 크기 확인
     const fileSize = metadata.filesize || metadata.filesize_approx || 0;
     if (fileSize > MAX_FILE_SIZE) {
-      activeJobs--;
+      if (!jobFinished) {
+
+        activeJobs--;
+
+        jobFinished = true;
+
+      }
       return res.status(400).json({ error: 'FILE_TOO_LARGE', message: `File size (${Math.round(fileSize / 1024 / 1024)}MB) exceeds 1GB limit` });
     }
 
     // 3. 스트리밍 헤더 설정 (Content-Length는 스트리밍 시 부정확할 수 있으므로 제외 권장)
     const filename = (metadata.title || randomId).replace(/[\\/:*?"<>|]/g, "").substring(0, 80);
-    res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}.mp4"`);
+    res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(filename)}.mp4`);
     res.setHeader('Content-Type', 'video/mp4');
-    res.setHeader('Transfer-Encoding', 'chunked');
 
     // 4. yt-dlp 실행
     // fragmented mp4 플래그를 사용하여 스트리밍(pipe) 시에도 재생 가능한 MP4를 생성합니다.
     const ytdlpArgs = [
-      url,
       '--cookies',
       '/home/opc/cookies.txt',
+      url,
       '-f',
-      'bv*+ba/b',
+      'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
       '--merge-output-format',
       'mp4',
       '-o',
       '-',
+      '--downloader',
+      'ffmpeg',
+      '--downloader-args',
+      'ffmpeg:-movflags frag_keyframe+empty_moov',
       '--no-part',
-      '--postprocessor-args',
-      'ffmpeg:-movflags frag_keyframe+empty_moov'
+      '--quiet',
+      '--no-warnings',
     ];
 
-    if (process.env.YTDLP_PROXY) {
-      ytdlpArgs.push('--proxy', process.env.YTDLP_PROXY);
-    }
-
-    console.log("[YT-DLP CMD]", ytdlpArgs.join(" "));
-
     const downloadProc = spawn('yt-dlp', ytdlpArgs);
+
     downloadProc.stdout.pipe(res);
 
     downloadProc.stderr.on('data', (data) => {
+
       console.error(`[STREAM-ERR] ${data.toString()}`);
+
     });
 
     downloadProc.on('close', (code) => {
+
+    if (!jobFinished) {
+
       activeJobs--;
-      console.log(`[STREAM-END] Finished: ${filename} with code ${code}`);
+
+      jobFinished = true;
+
+    }
+
+      if (code !== 0) {
+
+        console.error(`yt-dlp exited with ${code}`);
+
+        if (!res.headersSent) {
+
+          return res.status(500).end();
+
+        }
+
+        return;
+
+      }
+
+      res.end();
+
+      console.log(`[STREAM-END] Finished: ${filename}`);
+
     });
 
-    // 클라이언트가 연결을 끊으면 프로세스 종료
-    req.on('close', () => {
-      if (downloadProc) downloadProc.kill();
-    });
+    req.on('aborted', () => {
+      if (!downloadProc.killed) {
 
+        downloadProc.kill('SIGTERM');
+
+        setTimeout(() => {
+
+          if (!downloadProc.killed) {
+
+            downloadProc.kill('SIGKILL');
+
+          }
+
+        }, 3000);
+
+      }
+
+      if (!jobFinished) {
+
+        activeJobs--;
+
+        jobFinished = true;
+
+      }
+
+      console.log(`[CLIENT_DISCONNECTED] ${clientIp}`);
+    });
+  
   } catch (err) {
     const errorMessage = err.message || 'Unknown error';
     const userMessage = mapYtDlpErrorMessage(errorMessage);
@@ -288,14 +368,38 @@ app.post('/api/download', async (req, res) => {
       statusCode = 504;
       errorCode = 'TIMEOUT';
     }
-    activeJobs--;
-    res.status(statusCode).json({ error: errorCode, message: userMessage });
+    if (!jobFinished) {
+
+      activeJobs--;
+
+      jobFinished = true;
+
+    }
+    if (!res.headersSent) {
+      res.status(statusCode).json({
+        error: errorCode,
+        message: userMessage
+      });
+    }
   }
 });
 
 app.use((err, req, res, next) => {
   console.error('[UNHANDLED ERROR]', err);
-  res.status(500).json({ error: 'INTERNAL_SERVER_ERROR', message: 'An unexpected error occurred' });
+
+  if (res.headersSent) {
+
+    return next(err);
+
+  }
+
+  res.status(500).json({
+
+    error: 'INTERNAL_SERVER_ERROR',
+
+    message: 'An unexpected error occurred'
+
+  });
 });
 
 app.listen(PORT, () => {
