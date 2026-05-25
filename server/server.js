@@ -237,13 +237,10 @@ app.post('/api/download', async (req, res) => {
     const ytdlpArgs = [
       url,
       '--cookies', '/home/opc/cookies.txt',
-      '-f', 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
-      '--merge-output-format', 'mp4',
+      '--extractor-args', 'youtube:player_client=android',
+      '-f', 'best',
       '-o', '-',
-      '--no-warnings',
-      '--quiet',
-      '--no-part',
-      '--postprocessor-args', 'ffmpeg:-movflags frag_keyframe+empty_moov'
+      '--no-part'
     ];
 
     if (process.env.YTDLP_PROXY) {
