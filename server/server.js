@@ -126,6 +126,9 @@ function mapYtDlpErrorMessage(errorMessage) {
   if (errorMessage.includes('You need to log in')) {
     return 'Instagram 스토리 또는 비공개 콘텐츠는 다운로드할 수 없습니다.';
   }
+  if (errorMessage.includes('Sign in to confirm you’re not a bot') || errorMessage.includes('Sign in to confirm you are not a bot')) {
+    return 'YouTube에서 자동화 트래픽을 감지하여 다운로드가 차단되었습니다. 잠시 후 다시 시도하거나, 데스크탑 환경에서 시도해 주세요.';
+  }
   if (errorMessage.includes('video not found') || errorMessage.includes('Video not found') || errorMessage.includes('HTTP Error 404')) {
     return '영상을 찾을 수 없습니다. URL을 확인해 주세요.';
   }
