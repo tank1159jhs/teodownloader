@@ -236,6 +236,7 @@ app.post('/api/download', async (req, res) => {
     // fragmented mp4 플래그를 사용하여 스트리밍(pipe) 시에도 재생 가능한 MP4를 생성합니다.
     const ytdlpArgs = [
       url,
+      '--cookies', '/home/opc/cookies.txt',
       '-f', 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
       '--merge-output-format', 'mp4',
       '-o', '-',
