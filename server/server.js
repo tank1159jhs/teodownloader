@@ -54,13 +54,17 @@ function getCommonYtDlpArgs() {
   const args = [
     '--no-warnings',
     '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    '--referer', 'https://www.google.com/',
-    '--geo-bypass'
+    '--referer', 'https://www.youtube.com/',
+    '--geo-bypass',
+    // 최신 yt-dlp 브라우저 흉내내기 옵션
+    '--impersonate', 'chrome'
   ];
 
   const cookiesPath = process.env.YTDLP_COOKIES || '/home/opc/cookies.txt';
   if (fs.existsSync(cookiesPath)) {
     args.push('--cookies', cookiesPath);
+  } else {
+    console.warn(`[WARN] Cookies file not found at: ${cookiesPath}`);
   }
 
   if (process.env.YTDLP_PROXY) {
