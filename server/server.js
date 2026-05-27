@@ -21,22 +21,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // =================================
-// 플랫폼별 독립 설정 (서로 절대 간섭 불가)
+// 플랫폼별 독립 설정
 // =================================
 const PLATFORM_CONFIGS = {
   youtube: {
     domains: ['youtube.com', 'youtu.be'],
-    // 가장 실패 없는 범용 포맷 선택
-    format: 'bestvideo+bestaudio/best',
+    // 가장 강력하고 실패 없는 포맷 조합 (비디오+오디오 또는 통합본)
+    format: 'bv+ba/b',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
     referer: 'https://www.youtube.com/',
     extraArgs: [
       '--extractor-args', 'youtube:player_client=android,web',
-      '--format-sort', 'res,vcodec:vp9',
       '--force-ipv4',
       '--no-check-certificates'
-    ],
-    postProcessor: 'ffmpeg:-movflags frag_keyframe+empty_moov'
+    ]
   },
   tiktok: {
     domains: ['tiktok.com'],
@@ -44,8 +42,7 @@ const PLATFORM_CONFIGS = {
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://www.google.com/',
     impersonate: 'chrome',
-    extraArgs: [],
-    postProcessor: 'ffmpeg:-movflags frag_keyframe+empty_moov'
+    extraArgs: []
   },
   instagram: {
     domains: ['instagram.com'],
@@ -53,8 +50,7 @@ const PLATFORM_CONFIGS = {
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://www.google.com/',
     impersonate: 'chrome',
-    extraArgs: [],
-    postProcessor: 'ffmpeg:-movflags frag_keyframe+empty_moov'
+    extraArgs: []
   },
   twitter: {
     domains: ['x.com', 'twitter.com'],
@@ -62,27 +58,13 @@ const PLATFORM_CONFIGS = {
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://x.com/',
     impersonate: 'chrome',
-    extraArgs: [],
-    postProcessor: 'ffmpeg:-movflags frag_keyframe+empty_moov'
+    extraArgs: []
   }
 };
 
 // =================================
-// 유틸리티
+// 공통 인자 생성기
 // =================================
-function getPlatformConfig(urlString) {
-  try {
-    const url = new URL(urlString);
-    const hostname = url.hostname.toLowerCase();
-    for (const key in PLATFORM_CONFIGS) {
-      if (PLATFORM_CONFIGS[key].domains.some(d => hostname === d || hostname.endsWith('.' + d))) {
-        return PLATFORM_CONFIGS[key];
-      }
-    }
-  } catch (e) {}
-  return null;
-}
-
 function buildYtDlpArgs(url, config, isMetadata = false) {
   const args = [
     '--no-warnings',
@@ -104,9 +86,9 @@ function buildYtDlpArgs(url, config, isMetadata = false) {
     args.push('-f', config.format);
     args.push('-o', '-');
     args.push('--no-part', '--quiet');
+    // 병합 및 스트리밍 안정화 설정 (FFmpeg 에러 8 방지)
     args.push('--merge-output-format', 'mp4');
-    args.push('--downloader', 'ffmpeg');
-    args.push('--downloader-args', `ffmpeg:-movflags frag_keyframe+empty_moov -f mp4`);
+    args.push('--postprocessor-args', 'ffmpeg:-movflags frag_keyframe+empty_moov');
   }
   return args;
 }
@@ -116,12 +98,15 @@ function buildYtDlpArgs(url, config, isMetadata = false) {
 // =================================
 app.use(cors());
 
-// 정적 파일 및 다국어 지원
 app.get(['/sw.js', '/verification.txt', '/verification.html'], (req, res) => {
   res.sendFile(path.join(FRONTEND_PATH, req.path.split('/').pop()));
 });
+
 app.use(express.static(FRONTEND_PATH));
-app.get(['/en', '/ko', '/ja'], (req, res) => res.sendFile(path.join(FRONTEND_PATH, 'index.html')));
+
+app.get(['/en', '/ko', '/ja'], (req, res) => {
+  res.sendFile(path.join(FRONTEND_PATH, 'index.html'));
+});
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
@@ -135,55 +120,59 @@ app.post('/api/download', async (req, res) => {
   let downloadProc = null;
 
   try {
-    // 1. 정보 추출
+    // 1. 정보 추출 (Metadata)
     const metadataArgs = buildYtDlpArgs(url, config, true);
-    console.log(`[EXEC-META] yt-dlp ${metadataArgs.join(' ')} "${url}"`);
-    
     const metadataProc = spawn('yt-dlp', [...metadataArgs, url]);
     let stdout = '';
-    let stderr = '';
-
-    metadataProc.stdout.on('data', (d) => stdout += d.toString());
-    metadataProc.stderr.on('data', (d) => stderr += d.toString());
-
+    
     await new Promise((resolve, reject) => {
-      metadataProc.on('close', (code) => code === 0 ? resolve() : reject(new Error(stderr)));
+      metadataProc.stdout.on('data', (d) => stdout += d.toString());
+      metadataProc.on('close', (code) => code === 0 ? resolve() : reject(new Error('META_FAIL')));
     });
 
     const metadata = JSON.parse(stdout);
     const title = (metadata.title || crypto.randomBytes(4).toString('hex')).replace(/[\\/:*?"<>|]/g, "").substring(0, 80);
 
-    // 2. 헤더 설정
+    // 2. 응답 헤더 설정
     res.setHeader('Content-Type', 'video/mp4');
     res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(title)}.mp4"`);
 
-    // 3. 다운로드 시작
+    // 3. 실제 다운로드 (Stream)
     const downloadArgs = buildYtDlpArgs(url, config, false);
-    console.log(`[EXEC-DL] yt-dlp ${downloadArgs.join(' ')} "${url}"`);
+    console.log(`[DL-START] yt-dlp ${downloadArgs.join(' ')} "${url}"`);
     
     downloadProc = spawn('yt-dlp', [...downloadArgs, url]);
-
     downloadProc.stdout.pipe(res);
-    downloadProc.stderr.on('data', (d) => console.error(`[STREAM-ERR] ${d.toString()}`));
+
+    downloadProc.stderr.on('data', (data) => {
+      const err = data.toString();
+      if (err.includes('ERROR')) console.error(`[STREAM-ERR] ${err}`);
+    });
 
     downloadProc.on('close', (code) => {
-      console.log(`[FINISH] ${title} (${code})`);
+      console.log(`[DL-END] ${title} (${code})`);
       res.end();
     });
 
   } catch (err) {
-    console.error(`[FINAL-ERROR] ${err.message}`);
-    if (!res.headersSent) {
-      res.status(500).json({ error: 'FAILED', message: '영상 처리 중 오류가 발생했습니다.' });
-    }
+    console.error(`[PROCESS-ERR] ${err.message}`);
+    if (!res.headersSent) res.status(500).json({ error: 'FAILED' });
   }
 
-  req.on('close', () => {
-    if (downloadProc) {
-      downloadProc.kill('SIGTERM');
-      console.log('[CANCEL] Client disconnected');
-    }
-  });
+  req.on('close', () => downloadProc && downloadProc.kill('SIGTERM'));
 });
 
-app.listen(PORT, () => console.log(`🚀 TAEO Final Modular Server running on port ${PORT}`));
+function getPlatformConfig(urlString) {
+  try {
+    const url = new URL(urlString);
+    const hostname = url.hostname.toLowerCase();
+    for (const key in PLATFORM_CONFIGS) {
+      if (PLATFORM_CONFIGS[key].domains.some(d => hostname === d || hostname.endsWith('.' + d))) {
+        return PLATFORM_CONFIGS[key];
+      }
+    }
+  } catch (e) {}
+  return null;
+}
+
+app.listen(PORT, () => console.log(`🚀 TAEO Production Server running on port ${PORT}`));
