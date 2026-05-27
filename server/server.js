@@ -26,29 +26,26 @@ app.use(express.json());
 const PLATFORM_CONFIGS = {
   youtube: {
     domains: ['youtube.com', 'youtu.be'],
-    format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+    format: 'best', // 포맷 에러 방지를 위해 가장 확실한 'best' 사용
     userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
     referer: 'https://www.youtube.com/',
-    extraArgs: ['--extractor-args', 'youtube:player_client=ios,mweb;player_skip=web,web_embedded', '--force-ipv4'],
-    postProcessor: 'ffmpeg:-movflags frag_keyframe+empty_moov'
+    extraArgs: ['--extractor-args', 'youtube:player_client=ios,mweb;player_skip=web,web_embedded', '--force-ipv4']
   },
   tiktok: {
     domains: ['tiktok.com'],
     format: 'best',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    referer: 'https://www.tiktok.com/',
+    referer: 'https://www.google.com/', // 틱톡은 일반적인 유입을 선호함
     impersonate: 'chrome',
-    extraArgs: [],
-    postProcessor: 'ffmpeg:-movflags frag_keyframe+empty_moov'
+    extraArgs: []
   },
   instagram: {
     domains: ['instagram.com'],
     format: 'best',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    referer: 'https://www.instagram.com/',
+    referer: 'https://www.google.com/',
     impersonate: 'chrome',
-    extraArgs: [],
-    postProcessor: 'ffmpeg:-movflags frag_keyframe+empty_moov'
+    extraArgs: []
   },
   twitter: {
     domains: ['x.com', 'twitter.com'],
@@ -56,17 +53,13 @@ const PLATFORM_CONFIGS = {
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://x.com/',
     impersonate: 'chrome',
-    extraArgs: [],
-    postProcessor: 'ffmpeg:-movflags frag_keyframe+empty_moov'
+    extraArgs: []
   }
 };
 
 // =================================
 // 유틸리티
 // =================================
-let activeJobs = 0;
-const CONCURRENT_JOBS = 5;
-
 function getPlatformConfig(urlString) {
   try {
     const url = new URL(urlString);
@@ -101,8 +94,9 @@ function buildYtDlpArgs(url, config, isMetadata = false) {
     args.push('-f', config.format);
     args.push('-o', '-');
     args.push('--no-part', '--quiet');
-    args.push('--merge-output-format', 'mp4');
-    args.push('--postprocessor-args', config.postProcessor);
+    // 스트리밍 안정성을 위한 범용 FFmpeg 설정
+    args.push('--downloader', 'ffmpeg');
+    args.push('--downloader-args', 'ffmpeg:-movflags frag_keyframe+empty_moov -f mp4');
   }
   return args;
 }
@@ -118,7 +112,8 @@ app.get(['/sw.js', '/verification.txt', '/verification.html'], (req, res) => {
 });
 app.use(express.static(FRONTEND_PATH));
 app.get(['/en', '/ko', '/ja'], (req, res) => res.sendFile(path.join(FRONTEND_PATH, 'index.html')));
-app.get('/api/health', (req, res) => res.json({ status: 'ok', activeJobs }));
+
+app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
 app.post('/api/download', async (req, res) => {
   const { url } = req.body;
@@ -127,9 +122,6 @@ app.post('/api/download', async (req, res) => {
   const config = getPlatformConfig(url);
   if (!config) return res.status(400).json({ error: 'UNSUPPORTED_DOMAIN' });
 
-  if (activeJobs >= CONCURRENT_JOBS) return res.status(429).json({ error: 'SERVER_BUSY' });
-
-  activeJobs++;
   let downloadProc = null;
 
   try {
@@ -158,19 +150,26 @@ app.post('/api/download', async (req, res) => {
     downloadProc = spawn('yt-dlp', downloadArgs);
 
     downloadProc.stdout.pipe(res);
+    downloadProc.stderr.on('data', (d) => console.error(`[STREAM-ERR] ${d.toString()}`));
+
     downloadProc.on('close', (code) => {
-      activeJobs--;
       console.log(`[FINISH] ${title} (${code})`);
       res.end();
     });
 
-  } catch (err) {
-    activeJobs--;
-    console.error(`[ERROR] ${err.message}`);
-    if (!res.headersSent) res.status(500).json({ error: 'DOWNLOAD_FAILED', message: '영상 처리 중 오류가 발생했습니다.' });
-  }
+    req.on('close', () => {
+      if (downloadProc) {
+        downloadProc.kill('SIGTERM');
+        console.log('[CANCEL] Client disconnected');
+      }
+    });
 
-  req.on('close', () => downloadProc && downloadProc.kill());
+  } catch (err) {
+    console.error(`[ERROR] ${err.message}`);
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'FAILED', message: '영상 처리 중 오류가 발생했습니다.' });
+    }
+  }
 });
 
-app.listen(PORT, () => console.log(`🚀 TAEO Modular Server started on ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 TAEO Modular Server running on port ${PORT}`));
