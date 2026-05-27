@@ -54,7 +54,6 @@ function validateUrl(urlString) {
 function isWhitelistedDomain(hostname) {
   return WHITELISTED_DOMAINS.some(domain => hostname === domain || hostname.endsWith('.' + domain));
 }
-
 // yt-dlp 인자 생성 (URL에 따라 분기 처리)
 function getYtDlpArgs(url) {
   const isYoutube = url.includes('youtube.com') || url.includes('youtu.be');
@@ -63,10 +62,11 @@ function getYtDlpArgs(url) {
   const args = ['--no-warnings', '--geo-bypass'];
 
   if (isYoutube) {
-    // [유튜브 전용] iOS 우회 설정 (가장 호환성 높은 버전)
+    // [유튜브] 벤치마킹 결과 가장 안정적인 iOS/Android 혼합 우회
     args.push('--user-agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1');
     args.push('--referer', 'https://www.youtube.com/');
-    args.push('--extractor-args', 'youtube:player_client=ios,mweb;player_skip=web,web_embedded');
+    // player_skip을 제거하여 더 많은 포맷을 찾을 수 있게 함
+    args.push('--extractor-args', 'youtube:player_client=ios,android,mweb');
     args.push('--force-ipv4');
   } else if (isX) {
     // [X/트위터 전용] 
@@ -164,8 +164,9 @@ app.post('/api/download', async (req, res) => {
 
     const ytdlpArgs = [
       url,
-      // 가장 호환성이 좋은 'best' 포맷 하나만 선택 (iOS 우회 시 필수)
-      '-f', 'best',
+      // 벤치마킹 힌트: 가장 범용적인 mp4 호환 포맷 선택 로직
+      '-f', 'bv[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best',
+      '--merge-output-format', 'mp4',
       '-o', '-',
       '--no-part',
       '--quiet',
