@@ -59,15 +59,14 @@ function isWhitelistedDomain(hostname) {
 function getYtDlpArgs(url) {
   const isYoutube = url.includes('youtube.com') || url.includes('youtu.be');
   const isX = url.includes('x.com') || url.includes('twitter.com');
-  
-  // 공통 기본 인자
+
   const args = ['--no-warnings', '--geo-bypass'];
 
   if (isYoutube) {
-    // [유튜브 전용] iOS 우회 설정
+    // [유튜브 전용] iOS 우회 설정 (가장 호환성 높은 버전)
     args.push('--user-agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1');
     args.push('--referer', 'https://www.youtube.com/');
-    args.push('--extractor-args', 'youtube:player_client=ios;player_skip=web,mweb,mweb_embedded,web_embedded');
+    args.push('--extractor-args', 'youtube:player_client=ios,mweb;player_skip=web,web_embedded');
     args.push('--force-ipv4');
   } else if (isX) {
     // [X/트위터 전용] 
@@ -165,9 +164,8 @@ app.post('/api/download', async (req, res) => {
 
     const ytdlpArgs = [
       url,
-      // 포맷 제한을 완화하여 차단 우회 시에도 영상을 찾을 수 있게 함
-      '-f', 'bestvideo+bestaudio/best',
-      '--merge-output-format', 'mp4',
+      // 가장 호환성이 좋은 'best' 포맷 하나만 선택 (iOS 우회 시 필수)
+      '-f', 'best',
       '-o', '-',
       '--no-part',
       '--quiet',
