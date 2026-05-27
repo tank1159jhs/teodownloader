@@ -15,106 +15,96 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
-
-// 프론트엔드 정적 파일 경로 설정 (루트의 frontend 폴더를 가리킴)
 const FRONTEND_PATH = path.join(__dirname, '../frontend');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // =================================
-// 설정
+// 플랫폼별 독립 설정
 // =================================
-const WHITELISTED_DOMAINS = ['tiktok.com', 'instagram.com', 'youtube.com', 'x.com', 'twitter.com'];
-const CONCURRENT_JOBS = 5;
-const DOWNLOAD_TIMEOUT = 10 * 60 * 1000; // 10분
-
-let activeJobs = 0;
+const PLATFORM_CONFIGS = {
+  youtube: {
+    domains: ['youtube.com', 'youtu.be'],
+    format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+    userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
+    referer: 'https://www.youtube.com/',
+    extraArgs: ['--extractor-args', 'youtube:player_client=ios,mweb;player_skip=web,web_embedded', '--force-ipv4'],
+    postProcessor: 'ffmpeg:-movflags frag_keyframe+empty_moov'
+  },
+  tiktok: {
+    domains: ['tiktok.com'],
+    format: 'best',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    referer: 'https://www.tiktok.com/',
+    impersonate: 'chrome',
+    extraArgs: [],
+    postProcessor: 'ffmpeg:-movflags frag_keyframe+empty_moov'
+  },
+  instagram: {
+    domains: ['instagram.com'],
+    format: 'best',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    referer: 'https://www.instagram.com/',
+    impersonate: 'chrome',
+    extraArgs: [],
+    postProcessor: 'ffmpeg:-movflags frag_keyframe+empty_moov'
+  },
+  twitter: {
+    domains: ['x.com', 'twitter.com'],
+    format: 'best',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    referer: 'https://x.com/',
+    impersonate: 'chrome',
+    extraArgs: [],
+    postProcessor: 'ffmpeg:-movflags frag_keyframe+empty_moov'
+  }
+};
 
 // =================================
 // 유틸리티
 // =================================
-function generateRandomId() {
-  return crypto.randomBytes(8).toString('hex');
-}
+let activeJobs = 0;
+const CONCURRENT_JOBS = 5;
 
-function getClientIp(req) {
-  return req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket.remoteAddress;
-}
-
-function validateUrl(urlString) {
+function getPlatformConfig(urlString) {
   try {
     const url = new URL(urlString);
-    return { valid: ['http:', 'https:'].includes(url.protocol), url };
-  } catch (err) {
-    return { valid: false };
-  }
-}
-
-function isWhitelistedDomain(hostname) {
-  return WHITELISTED_DOMAINS.some(domain => hostname === domain || hostname.endsWith('.' + domain));
-}
-// yt-dlp 인자 생성 (URL에 따라 분기 처리)
-function getYtDlpArgs(url) {
-  const isYoutube = url.includes('youtube.com') || url.includes('youtu.be');
-  const isX = url.includes('x.com') || url.includes('twitter.com');
-
-  const args = ['--no-warnings', '--geo-bypass'];
-
-  if (isYoutube) {
-    // [유튜브] 벤치마킹 결과 가장 안정적인 iOS/Android 혼합 우회
-    args.push('--user-agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1');
-    args.push('--referer', 'https://www.youtube.com/');
-    // player_skip을 제거하여 더 많은 포맷을 찾을 수 있게 함
-    args.push('--extractor-args', 'youtube:player_client=ios,android,mweb');
-    args.push('--force-ipv4');
-  } else if (isX) {
-    // [X/트위터 전용] 
-    args.push('--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
-    args.push('--referer', 'https://x.com/');
-    args.push('--impersonate', 'chrome');
-  } else {
-    // [틱톡/인스타/기타] 검증된 기본 설정
-    args.push('--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
-    args.push('--referer', 'https://www.google.com/');
-    args.push('--impersonate', 'chrome');
-  }
-
-  // 쿠키 설정
-  const envPath = process.env.YTDLP_COOKIES;
-  const defaultPath = '/home/opc/cookies.txt';
-  let finalPath = null;
-
-  if (envPath && fs.existsSync(envPath)) finalPath = envPath;
-  else if (fs.existsSync(defaultPath)) finalPath = defaultPath;
-
-  if (finalPath) args.push('--cookies', finalPath);
-
-  if (process.env.YTDLP_PROXY) {
-    args.push('--proxy', process.env.YTDLP_PROXY);
-  }
-
-  return args;
-}
-
-async function getMetadata(url) {
-  return new Promise((resolve, reject) => {
-    const args = [url, '--dump-json', ...getYtDlpArgs(url)];
-    const proc = spawn('yt-dlp', args);
-    let stdout = '';
-    let stderr = '';
-
-    proc.stdout.on('data', (data) => stdout += data.toString());
-    proc.stderr.on('data', (data) => stderr += data.toString());
-
-    proc.on('close', (code) => {
-      if (code === 0) {
-        try { resolve(JSON.parse(stdout)); } catch (e) { reject(new Error('JSON_PARSE_ERROR')); }
-      } else {
-        reject(new Error(stderr || 'UNKNOWN_ERROR'));
+    const hostname = url.hostname.toLowerCase();
+    for (const key in PLATFORM_CONFIGS) {
+      if (PLATFORM_CONFIGS[key].domains.some(d => hostname === d || hostname.endsWith('.' + d))) {
+        return PLATFORM_CONFIGS[key];
       }
-    });
-  });
+    }
+  } catch (e) {}
+  return null;
+}
+
+function buildYtDlpArgs(url, config, isMetadata = false) {
+  const args = [
+    '--no-warnings',
+    '--geo-bypass',
+    '--user-agent', config.userAgent,
+    '--referer', config.referer,
+    ...config.extraArgs
+  ];
+
+  if (config.impersonate) args.push('--impersonate', config.impersonate);
+
+  const cookiesPath = process.env.YTDLP_COOKIES || '/home/opc/cookies.txt';
+  if (fs.existsSync(cookiesPath)) args.push('--cookies', cookiesPath);
+  if (process.env.YTDLP_PROXY) args.push('--proxy', process.env.YTDLP_PROXY);
+
+  if (isMetadata) {
+    args.push('--dump-json');
+  } else {
+    args.push('-f', config.format);
+    args.push('-o', '-');
+    args.push('--no-part', '--quiet');
+    args.push('--merge-output-format', 'mp4');
+    args.push('--postprocessor-args', config.postProcessor);
+  }
+  return args;
 }
 
 // =================================
@@ -122,91 +112,65 @@ async function getMetadata(url) {
 // =================================
 app.use(cors());
 
-// 광고 및 사이트 인증 파일 (루트의 frontend 폴더 기준)
+// 정적 파일 및 다국어 지원
 app.get(['/sw.js', '/verification.txt', '/verification.html'], (req, res) => {
   res.sendFile(path.join(FRONTEND_PATH, req.path.split('/').pop()));
 });
-
-// 정적 파일 서빙
 app.use(express.static(FRONTEND_PATH));
-
-// 다국어 서브경로 대응
-app.get(['/en', '/ko', '/ja'], (req, res) => {
-  res.sendFile(path.join(FRONTEND_PATH, 'index.html'));
-});
-
+app.get(['/en', '/ko', '/ja'], (req, res) => res.sendFile(path.join(FRONTEND_PATH, 'index.html')));
 app.get('/api/health', (req, res) => res.json({ status: 'ok', activeJobs }));
 
 app.post('/api/download', async (req, res) => {
-  const clientIp = getClientIp(req);
   const { url } = req.body;
-
   if (!url) return res.status(400).json({ error: 'URL_REQUIRED' });
 
-  const validation = validateUrl(url);
-  if (!validation.valid || !isWhitelistedDomain(validation.url.hostname)) {
-    return res.status(400).json({ error: 'INVALID_OR_UNSUPPORTED_URL' });
-  }
+  const config = getPlatformConfig(url);
+  if (!config) return res.status(400).json({ error: 'UNSUPPORTED_DOMAIN' });
 
-  if (activeJobs >= CONCURRENT_JOBS) {
-    return res.status(429).json({ error: 'SERVER_BUSY' });
-  }
+  if (activeJobs >= CONCURRENT_JOBS) return res.status(429).json({ error: 'SERVER_BUSY' });
 
   activeJobs++;
-  console.log(`[START] ${clientIp} -> ${url}`);
+  let downloadProc = null;
 
   try {
-    const metadata = await getMetadata(url);
-    const title = (metadata.title || generateRandomId()).replace(/[\\/:*?"<>|]/g, "").substring(0, 80);
-    
+    // 1. 정보 추출
+    const metadataArgs = [url, ...buildYtDlpArgs(url, config, true)];
+    const metadataProc = spawn('yt-dlp', metadataArgs);
+    let stdout = '';
+    let stderr = '';
+
+    metadataProc.stdout.on('data', (d) => stdout += d.toString());
+    metadataProc.stderr.on('data', (d) => stderr += d.toString());
+
+    await new Promise((resolve, reject) => {
+      metadataProc.on('close', (code) => code === 0 ? resolve() : reject(new Error(stderr)));
+    });
+
+    const metadata = JSON.parse(stdout);
+    const title = (metadata.title || crypto.randomBytes(4).toString('hex')).replace(/[\\/:*?"<>|]/g, "").substring(0, 80);
+
+    // 2. 헤더 설정
     res.setHeader('Content-Type', 'video/mp4');
     res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(title)}.mp4"`);
 
-    const ytdlpArgs = [
-      url,
-      // 벤치마킹 힌트: 가장 범용적인 mp4 호환 포맷 선택 로직
-      '-f', 'bv[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best',
-      '--merge-output-format', 'mp4',
-      '-o', '-',
-      '--no-part',
-      '--quiet',
-      ...getYtDlpArgs(url),
-      '--downloader', 'ffmpeg',
-      '--downloader-args', 'ffmpeg:-movflags frag_keyframe+empty_moov+faststart -f mp4'
-    ];
+    // 3. 다운로드 시작
+    const downloadArgs = [url, ...buildYtDlpArgs(url, config, false)];
+    downloadProc = spawn('yt-dlp', downloadArgs);
 
-    const downloadProc = spawn('yt-dlp', ytdlpArgs);
     downloadProc.stdout.pipe(res);
-
-    downloadProc.stderr.on('data', (data) => {
-      const err = data.toString();
-      if (err.includes('ERROR')) console.error(`[YTDLP-ERR] ${err}`);
-    });
-
     downloadProc.on('close', (code) => {
       activeJobs--;
-      console.log(`[END] ${title} (Code: ${code})`);
-      if (!res.headersSent && code !== 0) {
-        res.status(500).json({ error: 'DOWNLOAD_FAILED' });
-      }
-    });
-
-    req.on('close', () => {
-      if (downloadProc) {
-        downloadProc.kill('SIGTERM');
-        console.log(`[CANCEL] Client disconnected: ${title}`);
-      }
+      console.log(`[FINISH] ${title} (${code})`);
+      res.end();
     });
 
   } catch (err) {
     activeJobs--;
-    console.error(`[ERR] ${err.message}`);
-    if (!res.headersSent) {
-      res.status(500).json({ error: 'METADATA_FAILED', message: '영상 정보를 가져오지 못했습니다.' });
-    }
+    console.error(`[ERROR] ${err.message}`);
+    if (!res.headersSent) res.status(500).json({ error: 'DOWNLOAD_FAILED', message: '영상 처리 중 오류가 발생했습니다.' });
   }
+
+  req.on('close', () => downloadProc && downloadProc.kill());
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 TAEO Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 TAEO Modular Server started on ${PORT}`));
