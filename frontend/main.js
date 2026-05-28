@@ -18,6 +18,7 @@ const TRANSLATIONS = {
     success_title: "✅ Request Sent",
     download_again_btn: "Download Another",
     started: "Processing started! Your download will begin shortly.",
+    waiting_save_dialog: "The save location window will appear shortly (within 20 seconds). Please do not close this page.",
     feature_fast_title: "Lightning Fast",
     feature_fast_desc: "Download videos in seconds",
     feature_hq_title: "High Quality",
@@ -54,6 +55,7 @@ const TRANSLATIONS = {
     success_title: "✅ 요청 완료",
     download_again_btn: "추가 다운로드",
     started: "처리가 시작되었습니다! 곧 다운로드가 진행됩니다.",
+    waiting_save_dialog: "저장 위치 선택 창이 나타날 때까지 최대 20초 정도 소요될 수 있습니다. 창이 뜰 때까지 잠시만 기다려 주세요.",
     feature_fast_title: "초고속 다운로드",
     feature_fast_desc: "몇 초 만에 영상을 소장하세요",
     feature_hq_title: "고화질 유지",
@@ -87,13 +89,14 @@ const TRANSLATIONS = {
     loading_text: "サーバーを準備中... (最大1分ほどかかる場合があります)",
     error_title: "❌ エラー",
     retry_btn: "再試行",
-    success_title: "✅ リクエスト完了",
+    success_title: "✅ リクエスト 완료",
     download_again_btn: "続けてダウンロード",
     started: "処理を開始しました！まもなくダウンロードが始まります。",
+    waiting_save_dialog: "保存場所の選択ウィンドウが表示されるまで、最大20秒ほどかかる場合があります。ウィンドウが表示されるまでそのままお待ちください。",
     feature_fast_title: "超高速",
     feature_fast_desc: "数秒で動画を保存",
     feature_hq_title: "高画質",
-    feature_hq_desc: "最高の画質で提供",
+    feature_hq_desc: "最高の画질で提供",
     feature_wm_title: "ロゴなし",
     feature_wm_desc: "ウォーターマークなしの保存",
     feature_sec_title: "安全第一",
@@ -104,7 +107,7 @@ const TRANSLATIONS = {
     faq_q2: "利用料金はかかりますか？",
     faq_a2: "いいえ、完全に無料です。どなたでも自由にご利用いただけます。",
     faq_q3: "保存された動画はどうなりますか？",
-    faq_a3: "サーバーには保存されず、直接転送されます。プライバシーは守られます。",
+    faq_a3: "サーバー에는 保存されず、直接転送されます。プライバシーは守られます。",
     faq_q4: "容量制限はありますか？",
     faq_a4: "最大1GBまで対応しています。それ以上のサイズは失敗する可能性があります。",
     faq_q5: "データは収集されますか？",
@@ -197,12 +200,11 @@ function downloadVideo() {
   form.submit();
   document.body.removeChild(form);
 
-  // 로딩 상태에서 사용자에게 진행 상황 알림 (아이폰/느린 프록시 대응)
   setTimeout(() => {
     const langPath = window.location.pathname.split('/')[1] || 'en';
     const t = TRANSLATIONS[langPath] || TRANSLATIONS['en'];
     showSuccess(t.started);
-  }, 3000); // 3초 뒤 성공 멘트로 전환하여 심리적 안심 부여
+  }, 3000);
 }
 
 downloadBtn.addEventListener('click', downloadVideo);

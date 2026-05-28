@@ -31,11 +31,12 @@ const PLATFORM_CONFIGS = {
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
     referer: 'https://www.youtube.com/',
     extraArgs: [
-      '--extractor-args', 'youtube:player_client=android,web',
+      '--extractor-args', 'youtube:player_client=ios,mweb',
       '--force-ipv4',
       '--no-playlist',
       '--no-call-home',
-      '--no-check-certificates'
+      '--no-check-certificates',
+      '--no-cache-dir'
     ]
   },
   tiktok: {
