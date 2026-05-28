@@ -63,12 +63,30 @@ html, body {
   margin: 2rem auto 0 auto;
   padding: 0 1rem;
 }
-
 .input-group {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
+
+/* 모바일 대응 */
+@media (max-width: 600px) {
+  .input-group {
+    flex-direction: column;
+  }
+  .url-input {
+    font-size: 16px !important; /* iOS 자동 줌 방지 */
+    padding: 1rem !important;
+  }
+  .download-btn {
+    width: 100%;
+    padding: 1rem !important;
+  }
+  .hero-title {
+    font-size: 3rem !important;
+  }
+}
+
 .url-input {
   flex: 1;
   padding: 0.75rem 1rem;

@@ -26,13 +26,14 @@ app.use(express.json());
 const PLATFORM_CONFIGS = {
   youtube: {
     domains: ['youtube.com', 'youtu.be'],
-    // 가장 강력하고 실패 없는 포맷 조합 (비디오+오디오 또는 통합본)
-    format: 'bv+ba/b',
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+    // 아이폰 호환성을 위해 h264(avc1) 코덱 우선 순위 부여
+    format: 'bestvideo[vcodec^=avc1]+bestaudio[ext=m4a]/best[vcodec^=avc1]/best',
+    userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
     referer: 'https://www.youtube.com/',
     extraArgs: [
-      '--extractor-args', 'youtube:player_client=android,web',
+      '--extractor-args', 'youtube:player_client=ios,mweb',
       '--force-ipv4',
+      '--no-playlist',
       '--no-check-certificates'
     ]
   },
@@ -42,7 +43,7 @@ const PLATFORM_CONFIGS = {
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://www.google.com/',
     impersonate: 'chrome',
-    extraArgs: []
+    extraArgs: ['--no-playlist']
   },
   instagram: {
     domains: ['instagram.com'],
@@ -50,7 +51,7 @@ const PLATFORM_CONFIGS = {
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://www.google.com/',
     impersonate: 'chrome',
-    extraArgs: []
+    extraArgs: ['--no-playlist']
   },
   twitter: {
     domains: ['x.com', 'twitter.com'],
@@ -58,13 +59,26 @@ const PLATFORM_CONFIGS = {
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://x.com/',
     impersonate: 'chrome',
-    extraArgs: []
+    extraArgs: ['--no-playlist']
   }
 };
 
 // =================================
-// 공통 인자 생성기
+// 유틸리티
 // =================================
+function getPlatformConfig(urlString) {
+  try {
+    const url = new URL(urlString);
+    const hostname = url.hostname.toLowerCase();
+    for (const key in PLATFORM_CONFIGS) {
+      if (PLATFORM_CONFIGS[key].domains.some(d => hostname === d || hostname.endsWith('.' + d))) {
+        return PLATFORM_CONFIGS[key];
+      }
+    }
+  } catch (e) {}
+  return null;
+}
+
 function buildYtDlpArgs(url, config, isMetadata = false) {
   const args = [
     '--no-warnings',
@@ -81,13 +95,14 @@ function buildYtDlpArgs(url, config, isMetadata = false) {
   if (process.env.YTDLP_PROXY) args.push('--proxy', process.env.YTDLP_PROXY);
 
   if (isMetadata) {
-    args.push('--dump-json');
+    // 메타데이터 추출 속도 향상을 위한 최소 정보만 요청
+    args.push('--dump-json', '--flat-playlist');
   } else {
     args.push('-f', config.format);
     args.push('-o', '-');
     args.push('--no-part', '--quiet');
-    // 병합 및 스트리밍 안정화 설정 (FFmpeg 에러 8 방지)
     args.push('--merge-output-format', 'mp4');
+    // 아이폰 재생 가능하도록 movflags 설정
     args.push('--postprocessor-args', 'ffmpeg:-movflags frag_keyframe+empty_moov');
   }
   return args;
@@ -117,10 +132,11 @@ app.post('/api/download', async (req, res) => {
   const config = getPlatformConfig(url);
   if (!config) return res.status(400).json({ error: 'UNSUPPORTED_DOMAIN' });
 
+  console.log(`[DL-REQ] ${url}`);
   let downloadProc = null;
 
   try {
-    // 1. 정보 추출 (Metadata)
+    // 1. 정보 추출 (타임아웃 설정 및 속도 최적화)
     const metadataArgs = buildYtDlpArgs(url, config, true);
     const metadataProc = spawn('yt-dlp', [...metadataArgs, url]);
     let stdout = '';
@@ -128,51 +144,34 @@ app.post('/api/download', async (req, res) => {
     await new Promise((resolve, reject) => {
       metadataProc.stdout.on('data', (d) => stdout += d.toString());
       metadataProc.on('close', (code) => code === 0 ? resolve() : reject(new Error('META_FAIL')));
+      setTimeout(() => { metadataProc.kill(); reject(new Error('TIMEOUT')); }, 15000);
     });
 
     const metadata = JSON.parse(stdout);
     const title = (metadata.title || crypto.randomBytes(4).toString('hex')).replace(/[\\/:*?"<>|]/g, "").substring(0, 80);
 
-    // 2. 응답 헤더 설정
+    // 2. 응답 헤더 설정 (아이폰/사파리 파일명 호환 표준 적용)
     res.setHeader('Content-Type', 'video/mp4');
-    res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(title)}.mp4"`);
+    res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(title)}.mp4`);
 
     // 3. 실제 다운로드 (Stream)
     const downloadArgs = buildYtDlpArgs(url, config, false);
-    console.log(`[DL-START] yt-dlp ${downloadArgs.join(' ')} "${url}"`);
-    
     downloadProc = spawn('yt-dlp', [...downloadArgs, url]);
     downloadProc.stdout.pipe(res);
 
-    downloadProc.stderr.on('data', (data) => {
-      const err = data.toString();
-      if (err.includes('ERROR')) console.error(`[STREAM-ERR] ${err}`);
-    });
-
     downloadProc.on('close', (code) => {
-      console.log(`[DL-END] ${title} (${code})`);
+      console.log(`[DL-FINISHED] ${title} (${code})`);
       res.end();
     });
 
   } catch (err) {
-    console.error(`[PROCESS-ERR] ${err.message}`);
-    if (!res.headersSent) res.status(500).json({ error: 'FAILED' });
+    console.error(`[DL-ERROR] ${err.message}`);
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'FAILED', message: '영상을 처리할 수 없습니다.' });
+    }
   }
 
   req.on('close', () => downloadProc && downloadProc.kill('SIGTERM'));
 });
 
-function getPlatformConfig(urlString) {
-  try {
-    const url = new URL(urlString);
-    const hostname = url.hostname.toLowerCase();
-    for (const key in PLATFORM_CONFIGS) {
-      if (PLATFORM_CONFIGS[key].domains.some(d => hostname === d || hostname.endsWith('.' + d))) {
-        return PLATFORM_CONFIGS[key];
-      }
-    }
-  } catch (e) {}
-  return null;
-}
-
-app.listen(PORT, () => console.log(`🚀 TAEO Production Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 TAEO Mobile-Optimized Server on port ${PORT}`));
