@@ -131,7 +131,6 @@ app.post('/api/download', async (req, res) => {
     await new Promise((resolve, reject) => {
       metadataProc.stdout.on('data', (d) => title += d.toString());
       metadataProc.on('close', (code) => code === 0 ? resolve() : reject(new Error('META_FAIL')));
-      setTimeout(() => { metadataProc.kill(); reject(new Error('TIMEOUT')); }, 20000);
     });
 
     const cleanTitle = (title.trim() || crypto.randomBytes(4).toString('hex')).replace(/[\\/:*?"<>|]/g, "").substring(0, 80);
