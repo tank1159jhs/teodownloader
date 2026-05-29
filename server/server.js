@@ -26,8 +26,8 @@ app.use(express.json());
 const PLATFORM_CONFIGS = {
   youtube: {
     domains: ['youtube.com', 'youtu.be'],
-    // [사용자 불패 공식] 폰재생 호환성 + 봇 탐지 우회
-    format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+    // [사용자 불패 공식] 최상의 화질 및 호환성 유지
+    format: 'bv+ba/b',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
     referer: 'https://www.youtube.com/',
     extraArgs: [
