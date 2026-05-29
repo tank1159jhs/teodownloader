@@ -34,7 +34,6 @@ const PLATFORM_CONFIGS = {
       '--extractor-args', 'youtube:player_client=ios,mweb',
       '--force-ipv4',
       '--no-playlist',
-      '--no-call-home',
       '--no-check-certificates',
       '--no-cache-dir'
     ]
@@ -44,24 +43,21 @@ const PLATFORM_CONFIGS = {
     format: 'best',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://www.google.com/',
-    impersonate: 'chrome',
-    extraArgs: ['--no-playlist', '--no-call-home']
+    extraArgs: ['--no-playlist']
   },
   instagram: {
     domains: ['instagram.com'],
     format: 'best',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://www.google.com/',
-    impersonate: 'chrome',
-    extraArgs: ['--no-playlist', '--no-call-home']
+    extraArgs: ['--no-playlist']
   },
   twitter: {
     domains: ['x.com', 'twitter.com'],
     format: 'best',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://x.com/',
-    impersonate: 'chrome',
-    extraArgs: ['--no-playlist', '--no-call-home']
+    extraArgs: ['--no-playlist']
   }
 };
 
@@ -76,8 +72,6 @@ function buildYtDlpArgs(url, config, isMetadata = false) {
     '--referer', config.referer,
     ...config.extraArgs
   ];
-
-  if (config.impersonate) args.push('--impersonate', config.impersonate);
 
   const cookiesPath = process.env.YTDLP_COOKIES || '/home/opc/cookies.txt';
   if (fs.existsSync(cookiesPath)) args.push('--cookies', cookiesPath);
@@ -128,10 +122,18 @@ app.post('/api/download', async (req, res) => {
     const metadataArgs = buildYtDlpArgs(url, config, true);
     const metadataProc = spawn('yt-dlp', [...metadataArgs, url]);
     let title = '';
+    let metadataStderr = '';
     
     await new Promise((resolve, reject) => {
       metadataProc.stdout.on('data', (d) => title += d.toString());
-      metadataProc.on('close', (code) => code === 0 ? resolve() : reject(new Error('META_FAIL')));
+      metadataProc.stderr.on('data', (d) => metadataStderr += d.toString());
+      metadataProc.on('close', (code) => {
+        if (code === 0) resolve();
+        else {
+          console.error(`[META-ERR] code ${code}: ${metadataStderr.trim()}`);
+          reject(new Error('META_FAIL'));
+        }
+      });
     });
 
     const cleanTitle = (title.trim() || crypto.randomBytes(4).toString('hex')).replace(/[\\/:*?"<>|]/g, "").substring(0, 80);
