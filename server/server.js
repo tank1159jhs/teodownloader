@@ -21,17 +21,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // =================================
-// 플랫폼별 독립 설정
+// 플랫폼별 독립 설정 (폰재생+속도개선3 기반)
 // =================================
 const PLATFORM_CONFIGS = {
   youtube: {
     domains: ['youtube.com', 'youtu.be'],
-    // [사용자 불패 공식 복구] 에러 방지를 위해 기존 설정을 100% 유지
-    format: 'bv+ba/b',
+    // [사용자 불패 공식] 폰재생 호환성 + 봇 탐지 우회
+    format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
     referer: 'https://www.youtube.com/',
     extraArgs: [
-      '--extractor-args', 'youtube:player_client=ios,mweb',
+      '--extractor-args', 'youtube:player_client=android',
       '--force-ipv4',
       '--no-playlist',
       '--no-check-certificates',
@@ -40,21 +40,22 @@ const PLATFORM_CONFIGS = {
   },
   tiktok: {
     domains: ['tiktok.com'],
-    format: 'best',
+    // 틱톡 폰재생 호환성 강화
+    format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://www.google.com/',
     extraArgs: ['--no-playlist']
   },
   instagram: {
     domains: ['instagram.com'],
-    format: 'best',
+    format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://www.google.com/',
     extraArgs: ['--no-playlist']
   },
   twitter: {
     domains: ['x.com', 'twitter.com'],
-    format: 'best',
+    format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://x.com/',
     extraArgs: ['--no-playlist']
