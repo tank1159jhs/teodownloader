@@ -275,9 +275,11 @@ app.post('/api/analyze', async (req, res) => {
 
   try {
     console.log(`[PRE-FETCH] Analyzing: ${url}`);
-    const { stdout: metadataJson } = await executeYtDlp([url, '--dump-json'], config, 20000);
+    // 분석 시간을 넉넉히(60초) 주어 확실히 캐시되게 함
+    const { stdout: metadataJson } = await executeYtDlp([url, '--dump-json'], config, 60000);
     const metadata = JSON.parse(metadataJson);
     setCache(url, metadata);
+    console.log(`[PRE-FETCH DONE] Cached: ${url}`);
     res.json({ status: 'analyzed' });
   } catch (err) {
     console.error(`[PRE-FETCH ERR] ${err.message}`);
@@ -326,7 +328,7 @@ app.post('/api/download', async (req, res) => {
     } else {
       console.log(`[CACHE-MISS] Analyzing metadata on the fly: ${url}`);
       try {
-        const { stdout: metadataJson } = await executeYtDlp([url, '--dump-json'], config, 30000);
+        const { stdout: metadataJson } = await executeYtDlp([url, '--dump-json'], config, 45000);
         metadata = JSON.parse(metadataJson);
       } catch (err) {
         activeJobs--;
@@ -357,10 +359,10 @@ app.post('/api/download', async (req, res) => {
       '--postprocessor-args', 'ffmpeg:-movflags frag_keyframe+empty_moov'
     ];
 
-    // [추가] aria2c 가속기 사용 (설치된 경우만 작동)
+    // [추가] aria2c 가속기 사용
     ytdlpArgs.push('--downloader', 'aria2c', '--downloader-args', 'aria2c:-x 16 -s 16 -k 1M');
 
-    // config 설정을 ytdlpArgs에 직접 추가 (executeYtDlp와 별개로 spawn 시 적용)
+    // config 설정을 ytdlpArgs에 직접 추가
     if (config.userAgent) ytdlpArgs.push('--user-agent', config.userAgent);
     if (config.referer) ytdlpArgs.push('--referer', config.referer);
     if (config.extraArgs) ytdlpArgs.push(...config.extraArgs);
@@ -370,7 +372,7 @@ app.post('/api/download', async (req, res) => {
       ytdlpArgs.push('--cookies', cookiesPath);
     }
 
-    if (process.env.YTDLP_PROXY) {
+    if (process.env.YTDLP_PROXY && config.useProxy !== false) {
       ytdlpArgs.push('--proxy', process.env.YTDLP_PROXY);
     }
 
@@ -433,5 +435,8 @@ process.on('uncaughtException', (err) => {
   console.error('[UNCAUGHT]', err);
 });
 process.on('unhandledRejection', (err) => {
+  console.error('[UNHANDLED REJECTION]', err);
+});
+r) => {
   console.error('[UNHANDLED REJECTION]', err);
 });
