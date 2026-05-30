@@ -31,10 +31,63 @@ const RATE_LIMIT_WINDOW = 60 * 1000; // 1분
 const RATE_LIMIT_MAX = 3; // 1분에 최대 3회
 
 // =================================
-// 전역 상태
+// 전역 상태 및 캐시
 // =================================
 let activeJobs = 0;
 const ipRequestMap = new Map(); // IP별 요청 추적
+const metadataCache = new Map(); // URL별 메타데이터 캐시 (Pre-fetch용)
+
+// 캐시 정리 (메모리 관리: 10분 후 삭제)
+function setCache(url, data) {
+  metadataCache.set(url, { data, timestamp: Date.now() });
+  setTimeout(() => {
+    const cached = metadataCache.get(url);
+    if (cached && Date.now() - cached.timestamp >= 10 * 60 * 1000) {
+      metadataCache.delete(url);
+    }
+  }, 10 * 60 * 1000);
+}
+
+// =================================
+// 플랫폼별 독립 설정 (폰재생+속도개선3 기반)
+// =================================
+const PLATFORM_CONFIGS = {
+  youtube: {
+    domains: ['youtube.com', 'youtu.be'],
+    // [사용자 불패 공식 복구] 에러 방지를 위해 기존 설정을 100% 유지
+    format: 'bv+ba/b',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+    referer: 'https://www.youtube.com/',
+    extraArgs: [
+      '--extractor-args', 'youtube:player_client=android,web',
+      '--force-ipv4',
+      '--no-playlist',
+      '--no-call-home',
+      '--no-check-certificates'
+    ]
+  },
+  tiktok: {
+    domains: ['tiktok.com'],
+    format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    referer: 'https://www.google.com/',
+    extraArgs: ['--no-playlist']
+  },
+  instagram: {
+    domains: ['instagram.com'],
+    format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    referer: 'https://www.google.com/',
+    extraArgs: ['--no-playlist']
+  },
+  twitter: {
+    domains: ['x.com', 'twitter.com'],
+    format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    referer: 'https://x.com/',
+    extraArgs: ['--no-playlist']
+  }
+};
 
 // =================================
 // 유틸리티 함수
@@ -80,19 +133,39 @@ function isWhitelistedDomain(hostname) {
   );
 }
 
-function executeYtDlp(args, timeout = DOWNLOAD_TIMEOUT) {
+function getPlatformConfig(urlString) {
+  try {
+    const url = new URL(urlString);
+    const hostname = url.hostname.toLowerCase();
+    for (const key in PLATFORM_CONFIGS) {
+      if (PLATFORM_CONFIGS[key].domains.some(d => hostname === d || hostname.endsWith('.' + d))) {
+        return PLATFORM_CONFIGS[key];
+      }
+    }
+  } catch (e) {}
+  return null;
+}
+
+function executeYtDlp(args, config = null, timeout = DOWNLOAD_TIMEOUT) {
   return new Promise((resolve, reject) => {
     let stdout = '';
     let stderr = '';
     const ytdlpArgs = [...args];
+    
+    // 기본 공통 인자 추가
+    ytdlpArgs.push('--no-warnings', '--geo-bypass');
+
+    if (config) {
+      if (config.userAgent) ytdlpArgs.push('--user-agent', config.userAgent);
+      if (config.referer) ytdlpArgs.push('--referer', config.referer);
+      if (config.extraArgs) ytdlpArgs.push(...config.extraArgs);
+    }
     
     const cookiesPath = process.env.YTDLP_COOKIES || '/home/opc/cookies.txt';
     if (fs.existsSync(cookiesPath)) {
       ytdlpArgs.push('--cookies', cookiesPath);
     }
     
-    ytdlpArgs.push('--extractor-args', 'youtube:player_client=android');
-
     if (process.env.YTDLP_PROXY) {
       ytdlpArgs.push('--proxy', process.env.YTDLP_PROXY);
     }
@@ -192,14 +265,17 @@ app.post('/api/analyze', async (req, res) => {
   if (!url) return res.status(400).end();
 
   const validation = validateUrl(url);
-  if (!validation.valid || !isWhitelistedDomain(validation.url.hostname)) return res.status(400).end();
+  if (!validation.valid) return res.status(400).end();
+  
+  const config = getPlatformConfig(url);
+  if (!config) return res.status(400).end();
 
   // 이미 캐시가 있으면 즉시 응답
   if (metadataCache.has(url)) return res.json({ status: 'cached' });
 
   try {
     console.log(`[PRE-FETCH] Analyzing: ${url}`);
-    const { stdout: metadataJson } = await executeYtDlp([url, '--dump-json', '--no-warnings'], 20000);
+    const { stdout: metadataJson } = await executeYtDlp([url, '--dump-json'], config, 20000);
     const metadata = JSON.parse(metadataJson);
     setCache(url, metadata);
     res.json({ status: 'analyzed' });
@@ -230,12 +306,13 @@ app.post('/api/download', async (req, res) => {
       activeJobs--;
       return res.status(400).json({ error: 'INVALID_URL', message: validation.error });
     }
-    const parsedUrl = validation.url;
-    const hostname = parsedUrl.hostname;
-    if (!isWhitelistedDomain(hostname)) {
+    
+    const config = getPlatformConfig(url);
+    if (!config) {
       activeJobs--;
-      return res.status(400).json({ error: 'DOMAIN_NOT_SUPPORTED', message: `${hostname} is not supported. Supported domains: ${WHITELISTED_DOMAINS.join(', ')}` });
+      return res.status(400).json({ error: 'DOMAIN_NOT_SUPPORTED', message: 'Unsupported domain' });
     }
+
     console.log(`[DOWNLOAD] Started from ${clientIp}: ${url}`);
     const randomId = generateRandomId();
     
@@ -248,8 +325,8 @@ app.post('/api/download', async (req, res) => {
       metadata = cached.data;
     } else {
       console.log(`[CACHE-MISS] Analyzing metadata on the fly: ${url}`);
-      const { stdout: metadataJson } = await executeYtDlp([url, '--dump-json', '--no-warnings'], 30000);
       try {
+        const { stdout: metadataJson } = await executeYtDlp([url, '--dump-json'], config, 30000);
         metadata = JSON.parse(metadataJson);
       } catch (err) {
         activeJobs--;
@@ -273,7 +350,7 @@ app.post('/api/download', async (req, res) => {
     // 4. yt-dlp 실행
     const ytdlpArgs = [
       url,
-      '-f', 'bv+ba/b',
+      '-f', config.format,
       '-o', '-',
       '--no-part',
       '--merge-output-format', 'mp4',
@@ -282,6 +359,11 @@ app.post('/api/download', async (req, res) => {
 
     // [추가] aria2c 가속기 사용 (설치된 경우만 작동)
     ytdlpArgs.push('--downloader', 'aria2c', '--downloader-args', 'aria2c:-x 16 -s 16 -k 1M');
+
+    // config 설정을 ytdlpArgs에 직접 추가 (executeYtDlp와 별개로 spawn 시 적용)
+    if (config.userAgent) ytdlpArgs.push('--user-agent', config.userAgent);
+    if (config.referer) ytdlpArgs.push('--referer', config.referer);
+    if (config.extraArgs) ytdlpArgs.push(...config.extraArgs);
 
     const cookiesPath = process.env.YTDLP_COOKIES || '/home/opc/cookies.txt';
     if (fs.existsSync(cookiesPath)) {
