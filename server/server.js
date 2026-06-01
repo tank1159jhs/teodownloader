@@ -103,9 +103,10 @@ const PLATFORM_CONFIGS = {
   },
   instagram: {
     domains: ['instagram.com'],
-    format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    referer: 'https://www.google.com/',
+    // [최적화] 인스타그램은 단일 'best' 포맷이 병합 오류 없이 가장 안정적임
+    format: 'best',
+    userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1',
+    referer: 'https://www.instagram.com/',
     useProxy: true,
     extraArgs: ['--no-playlist']
   },
