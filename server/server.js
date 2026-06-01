@@ -36,10 +36,12 @@ const RATE_LIMIT_MAX = 3; // 1분에 최대 3회
 let activeJobs = 0;
 const ipRequestMap = new Map(); // IP별 요청 추적
 const metadataCache = new Map(); // URL별 메타데이터 캐시 (Pre-fetch용)
+const pendingAnalyzes = new Map(); // 현재 진행 중인 분석 작업 (중복 방지)
 
 // 캐시 정리 (메모리 관리: 10분 후 삭제)
 function setCache(url, data) {
   metadataCache.set(url, { data, timestamp: Date.now() });
+  pendingAnalyzes.delete(url);
   setTimeout(() => {
     const cached = metadataCache.get(url);
     if (cached && Date.now() - cached.timestamp >= 10 * 60 * 1000) {
@@ -63,7 +65,6 @@ const PLATFORM_CONFIGS = {
       '--extractor-args', 'youtube:player_client=android,web',
       '--force-ipv4',
       '--no-playlist',
-      '--no-call-home',
       '--no-check-certificates'
     ]
   },
@@ -276,21 +277,27 @@ app.post('/api/analyze', async (req, res) => {
   const config = getPlatformConfig(url);
   if (!config) return res.status(400).end();
 
-  // 이미 캐시가 있으면 즉시 응답
+  // 이미 캐시가 있거나 분석 중이면 즉시 응답
   if (metadataCache.has(url)) return res.json({ status: 'cached' });
+  if (pendingAnalyzes.has(url)) return res.json({ status: 'pending' });
 
-  try {
-    console.log(`[PRE-FETCH] Analyzing: ${url}`);
-    // 분석 시간을 넉넉히(60초) 주어 확실히 캐시되게 함
-    const { stdout: metadataJson } = await executeYtDlp([url, '--dump-json'], config, 60000);
-    const metadata = JSON.parse(metadataJson);
-    setCache(url, metadata);
-    console.log(`[PRE-FETCH DONE] Cached: ${url}`);
-    res.json({ status: 'analyzed' });
-  } catch (err) {
-    console.error(`[PRE-FETCH ERR] ${err.message}`);
-    res.status(500).end();
-  }
+  const analysisPromise = (async () => {
+    try {
+      console.log(`[PRE-FETCH] Analyzing: ${url}`);
+      const { stdout: metadataJson } = await executeYtDlp([url, '--dump-json'], config, 60000);
+      const metadata = JSON.parse(metadataJson);
+      setCache(url, metadata);
+      console.log(`[PRE-FETCH DONE] Cached: ${url}`);
+      return metadata;
+    } catch (err) {
+      console.error(`[PRE-FETCH ERR] ${err.message}`);
+      pendingAnalyzes.delete(url);
+      throw err;
+    }
+  })();
+
+  pendingAnalyzes.set(url, analysisPromise);
+  res.json({ status: 'started' });
 });
 
 // 메인 다운로드 엔드포인트
@@ -324,13 +331,22 @@ app.post('/api/download', async (req, res) => {
     console.log(`[DOWNLOAD] Started from ${clientIp}: ${url}`);
     const randomId = generateRandomId();
     
-    // 1. 메타데이터 가져오기 (캐시 확인 또는 분석)
+    // 1. 메타데이터 가져오기 (캐시 확인 -> 분석 중인지 확인 -> 새로 분석)
     let metadata;
     const cached = metadataCache.get(url);
+    const pending = pendingAnalyzes.get(url);
     
     if (cached) {
       console.log(`[CACHE-HIT] Using pre-fetched metadata for: ${url}`);
       metadata = cached.data;
+    } else if (pending) {
+      console.log(`[CACHE-WAIT] Waiting for in-progress pre-fetch: ${url}`);
+      try {
+        metadata = await pending;
+      } catch (err) {
+        activeJobs--;
+        return res.status(400).json({ error: 'INVALID_VIDEO', message: 'Metadata analysis failed' });
+      }
     } else {
       console.log(`[CACHE-MISS] Analyzing metadata on the fly: ${url}`);
       try {
