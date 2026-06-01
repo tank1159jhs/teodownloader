@@ -1,339 +1,325 @@
-/* style.css - 모바일 우선, 심플 & 빠른 UX */
+/* style.css - Modern, High-Fidelity Professional Look */
 :root {
-  --primary: #0a0a23;
-  --accent: #00e0d3;
-  --error: #ff3b3b;
-  --success: #00c853;
-  --bg: #f9f9fb;
-  --text: #222;
-  --border: #e0e0e0;
+  --primary: #0f172a;
+  --accent: #06b6d4;
+  --accent-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  --tiktok-gradient: linear-gradient(90deg, #ff0050, #00f2ea);
+  --error: #ef4444;
+  --success: #10b981;
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
   margin: 0;
   padding: 0;
-  font-family: 'Inter', 'Apple SD Gothic Neo', Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
+  font-family: 'Inter', 'Noto Sans KR', sans-serif;
+  background-color: var(--bg);
+  color: var(--text-main);
+  line-height: 1.6;
 }
 
+/* Hero Section */
 .hero {
-  background: var(--primary);
+  background-color: var(--primary);
+  background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+  background-size: 32px 32px;
   color: #fff;
-  padding: 2.5rem 1rem 1.5rem 1rem;
+  padding: 4rem 1rem 6rem 1rem;
   text-align: center;
   position: relative;
 }
-.hero-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin: 0 0 0.5rem 0;
-}
-.hero-subtitle {
-  font-size: 1.2rem;
-  font-weight: 500;
-  margin: 0 0 0.5rem 0;
-}
-.hero-description {
-  font-size: 1rem;
-  font-weight: 400;
-  margin: 0 0 0.5rem 0;
+
+.top-nav {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 10;
 }
 
-.lang-switcher {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-}
 .lang-switcher select {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  outline: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.875rem;
   cursor: pointer;
+  outline: none;
+  backdrop-filter: blur(4px);
 }
 .lang-switcher select option { color: #000; }
 
-.container {
-  max-width: 480px;
-  margin: 2rem auto 0 auto;
-  padding: 0 1rem;
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin: 0;
+  letter-spacing: -0.05em;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-.input-group {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
+.hero-subtitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0.5rem 0 1rem 0;
+  opacity: 0.9;
+}
+.hero-description {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.6);
 }
 
-/* 모바일 대응 */
-@media (max-width: 600px) {
-  .input-group {
-    flex-direction: column;
-  }
-  .url-input {
-    font-size: 16px !important; /* iOS 자동 줌 방지 */
-    padding: 1rem !important;
-  }
-  .download-btn {
-    width: 100%;
-    padding: 1rem !important;
-  }
-  .hero-title {
-    font-size: 3rem !important;
-  }
+/* Main Container */
+.container {
+  max-width: 720px;
+  margin: -3rem auto 3rem auto;
+  padding: 0 1.5rem;
+  position: relative;
+}
+
+/* Download Card */
+.download-card {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.input-group {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0;
 }
 
 .url-input {
   flex: 1;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  border: 2px solid var(--border);
+  border-radius: 12px;
   font-size: 1rem;
+  transition: all 0.2s ease;
   outline: none;
-  transition: border 0.2s;
 }
 .url-input:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
 }
+
 .download-btn {
-  background: var(--accent);
+  background: var(--accent-gradient);
   color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 0 1.2rem;
+  border-radius: 12px;
+  padding: 0 1.5rem;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform 0.1s active, opacity 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
 }
-.download-btn:hover {
-  background: #00bfae;
+.download-btn:hover { opacity: 0.9; }
+.download-btn:active { transform: scale(0.98); }
+.download-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+
+/* Status UI */
+.status-ui {
+  margin-top: 2rem;
+  text-align: center;
+  padding: 1.5rem;
+  border-radius: 16px;
+  animation: fadeIn 0.3s ease;
 }
 
-.loading-ui, .error-ui, .success-ui {
-  margin: 1.5rem 0;
-  padding: 1.2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  background: #fff;
-  text-align: center;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.loading-ui .spinner {
-  width: 32px;
-  height: 32px;
-  border: 4px solid #eee;
-  border-top: 4px solid var(--accent);
+
+.status-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.loading .spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f1f5f9;
+  border-top-color: var(--accent);
   border-radius: 50%;
-  margin: 0 auto 0.5rem auto;
+  margin: 0 auto 1rem auto;
   animation: spin 1s linear infinite;
 }
-@keyframes spin {
-  100% { transform: rotate(360deg); }
-}
-.loading-text {
-  font-size: 1rem;
-  color: var(--primary);
-}
+@keyframes spin { 100% { transform: rotate(360deg); } }
 
-/* [추가] 진행률 게이지 바 스타일 */
+/* Progress Bar */
 .progress-container {
-    margin: 1.5rem 0;
-    width: 100%;
+  margin: 2rem 0;
 }
-.progress-bar-outer {
-    width: 100%;
-    height: 12px;
-    background: #e0e0e0;
-    border-radius: 6px;
-    overflow: hidden;
+.progress-bar-wrapper {
+  width: 100%;
+  height: 14px;
+  background: #f1f5f9;
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
 }
-.progress-bar-fill {
-    width: 0%;
-    height: 100%;
-    background: linear-gradient(90deg, #ff0050, #00f2ea);
-    transition: width 0.3s ease;
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  background: var(--tiktok-gradient);
+  border-radius: 100px;
+  transition: width 0.1s linear;
 }
-#progressText {
-    margin-top: 8px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    color: #ff0050;
-}
-
-.error-ui {
-  border: 1px solid var(--error);
-  color: var(--error);
-}
-.error-title {
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-.error-message {
-  margin-bottom: 1rem;
-}
-.retry-btn {
-  background: var(--error);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1.2rem;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.success-ui {
-  border: 1px solid var(--success);
-  color: var(--success);
-}
-.success-title {
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-.success-filename {
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-  color: var(--primary);
-  word-break: break-all;
-}
-.waiting-info {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 1.5rem;
-  line-height: 1.4;
-}
-.download-again-btn {
-  display: inline-block;
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1.2rem;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 0.5rem;
-}
-
-.features {
+.progress-info {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 2rem 0 1rem 0;
+  align-items: center;
   justify-content: center;
+  gap: 0.5rem;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--primary);
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.8); opacity: 0.5; }
+}
+
+.small-notice {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.error-msg { color: var(--error); margin-bottom: 1.5rem; }
+
+/* Features */
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-top: 3rem;
 }
 .feature-item {
-  flex: 1 1 40%;
-  min-width: 120px;
   background: #fff;
-  border-radius: 8px;
-  padding: 1rem;
+  padding: 1.5rem;
+  border-radius: 20px;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  border: 1px solid var(--border);
 }
-.feature-icon {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 0.5rem;
-}
+.feature-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+.feature-item h4 { margin: 0 0 0.5rem 0; font-size: 1.1rem; }
+.feature-item p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
 
-.faq {
-  margin: 2rem 0 1rem 0;
-}
-.faq h2 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
+/* FAQ */
+.faq { margin-top: 4rem; }
+.section-title { text-align: center; margin-bottom: 2rem; }
 .faq-item {
-  margin-bottom: 0.5rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
 }
 .faq-question {
   width: 100%;
-  background: #f5f5f5;
+  padding: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
   border: none;
-  border-radius: 6px;
-  padding: 0.7rem 1rem;
-  text-align: left;
   font-size: 1rem;
   font-weight: 600;
+  text-align: left;
   cursor: pointer;
-  transition: background 0.2s;
-}
-.faq-question:hover {
-  background: #e0e0e0;
 }
 .faq-answer {
   display: none;
-  padding: 0.5rem 1rem 0.5rem 1rem;
-  font-size: 0.97rem;
-  color: #444;
-}
-.faq-item.active .faq-answer {
-  display: block;
-}
-
-.legal-notice {
-  margin: 2rem 0 1rem 0;
+  padding: 0 1.25rem 1.25rem 1.25rem;
+  color: var(--text-muted);
   font-size: 0.95rem;
-  color: #666;
-  background: #fffbe6;
-  border: 1px solid #ffe58f;
-  border-radius: 6px;
-  padding: 1rem;
 }
+.faq-item.active .faq-answer { display: block; }
+.faq-item.active .fa-chevron-down { transform: rotate(180deg); }
 
-.footer {
-  background: var(--primary);
-  color: #fff;
-  padding: 1.5rem 1rem 1rem 1rem;
-  text-align: center;
-  margin-top: 2rem;
-}
-.footer-content {
-  max-width: 480px;
-  margin: 0 auto;
-}
-.footer-links {
-  margin-bottom: 0.5rem;
-}
-.footer-links a {
-  color: #fff;
-  text-decoration: underline;
-  margin: 0 0.3rem;
-  font-size: 0.97rem;
-}
-.footer-links .separator {
-  color: #aaa;
-  margin: 0 0.2rem;
-}
-.footer-disclaimer {
+.legal-box {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background: #fffbeb;
+  border: 1px solid #fef3c7;
+  border-radius: 12px;
   font-size: 0.9rem;
-  color: #bbb;
-  margin-top: 0.5rem;
+  color: #92400e;
 }
 
-.ad-banner, .ad-section {
-  width: 100%;
-  max-width: 480px;
-  margin: 1.5rem auto 0 auto;
-  min-height: 60px;
+/* Footer */
+.footer {
   text-align: center;
+  padding: 4rem 1rem;
+  background: #fff;
+  border-top: 1px solid var(--border);
+}
+.footer-links { margin-bottom: 1rem; display: flex; justify-content: center; gap: 1.5rem; }
+.footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
+.copyright { color: var(--text-muted); font-size: 0.85rem; }
+
+/* Ad Space */
+.ad-section { margin-top: 2rem; }
+.ad-placeholder {
+  height: 250px;
+  background: #f1f5f9;
+  border: 2px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  color: var(--text-muted);
+  font-weight: 700;
 }
 
-@media (max-width: 600px) {
-  .container, .footer-content, .ad-banner, .ad-section {
-    max-width: 100vw;
-    padding: 0 0.5rem;
-  }
-  .feature-item {
-    min-width: 100px;
-    padding: 0.7rem;
-  }
+/* Mobile Adjustments */
+@media (max-width: 640px) {
+  .hero-title { font-size: 2.75rem; }
+  .input-group { flex-direction: column; }
+  .download-btn { padding: 1rem; width: 100%; justify-content: center; }
+  .features { grid-template-columns: 1fr; }
+  .container { margin-top: -2rem; }
 }
 
-.hidden {
-  display: none !important;
-}
+.hidden { display: none !important; }

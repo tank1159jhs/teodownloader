@@ -1,31 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title data-i18n="meta_title">TAEO - Best TikTok, Instagram & YouTube Video Downloader</title>
-  <meta name="description" content="Download TikTok, Instagram, and YouTube videos instantly without watermark. Fastest and free tool for social media videos." data-i18n-content="meta_description">
+  <title data-i18n="meta_title">TAEO - 최고의 틱톡, 인스타그램, 유튜브 영상 다운로더</title>
+  <meta name="description" content="워터마크 없는 틱톡, 인스타, 유튜브 영상을 즉시 다운로드하세요. 가장 빠르고 무료인 소셜 미디어 도구입니다." data-i18n-content="meta_description">
+  
   <link rel="canonical" href="https://teao.kro.kr/">
   <link rel="alternate" hreflang="x-default" href="https://teao.kro.kr/">
   <link rel="alternate" hreflang="ko" href="https://teao.kro.kr/ko/">
   <link rel="alternate" hreflang="ja" href="https://teao.kro.kr/ja/">
   <link rel="alternate" hreflang="en" href="https://teao.kro.kr/en/">
-  
-  <!-- Open Graph / Facebook -->
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="manifest" href="/sw.js">
+
+  <!-- CSS & Fonts -->
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://teao.kro.kr/">
   <meta property="og:title" content="TAEO - Fast Video Downloader" data-i18n-content="meta_title">
-  <meta property="og:description" content="Download social media videos instantly without watermark. Free and Fast." data-i18n-content="meta_description">
+  <meta property="og:description" content="Download social media videos instantly without watermark." data-i18n-content="meta_description">
   <meta property="og:image" content="https://teao.kro.kr/og-image.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://teao.kro.kr/">
   <meta property="twitter:title" content="TAEO - Fast Video Downloader" data-i18n-content="meta_title">
-  <meta property="twitter:description" content="Download social media videos instantly without watermark. Free and Fast." data-i18n-content="meta_description">
-  <meta property="twitter:image" content="https://teao.kro.kr/og-image.png">
+  <meta property="twitter:description" content="Download social media videos instantly without watermark." data-i18n-content="meta_description">
 
-  <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -33,167 +41,143 @@
     "name": "TAEO Video Downloader",
     "operatingSystem": "All",
     "applicationCategory": "MultimediaApplication",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    }
-  }
-  </script>
-
-  <!-- JSON-LD FAQ Schema -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Which social platforms are supported?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Currently, we support TikTok, Instagram, and YouTube."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How long are downloads available?",
-        "acceptedAnswer": { 
-          "@type": "Answer",
-          "text": "Downloads are processed instantly and files are deleted from the server immediately after your download completes."
-        }
-      }
-    ]
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
   </script>
 </head>
 <body>
-  <!-- TODO Adsterra Social Bar
-  <script src="https://pl29531057.effectivecpmnetwork.com/37/3a/8e/373a8ea9cde9d103fcdcf23850bcde1d.js"></script>
-  -->
-  
-  <!-- TODO Monetag OnClick Popunder
-  <script>(function(s){s.dataset.zone='11046262',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-  -->
-  <!-- Hero Section -->
   <header class="hero">
-    <div class="lang-switcher">
-      <select id="langSelect">
-        <option value="en">English</option>
-        <option value="ko">한국어</option>
-        <option value="ja">日本語</option>
-      </select>
+    <div class="top-nav">
+      <div class="lang-switcher">
+        <select id="langSelect">
+          <option value="ko">한국어</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+        </select>
+      </div>
     </div>
     <div class="hero-content">
       <h1 class="hero-title" data-i18n="hero_title">⚡ TAEO</h1>
-      <p class="hero-subtitle" data-i18n="hero_subtitle">Fast & Easy Video Downloader</p>
-      <p class="hero-description" data-i18n="hero_description">Download TikTok, Instagram & YouTube videos instantly. No watermark, completely free.</p>
+      <p class="hero-subtitle" data-i18n="hero_subtitle">빠르고 쉬운 영상 다운로더</p>
+      <p class="hero-description" data-i18n="hero_description">틱톡, 인스타그램, 유튜브 영상을 즉시 다운로드하세요. 워터마크 없이 무료로 제공됩니다.</p>
     </div>
   </header>
 
-  <!-- Main Container -->
   <main class="container">
-    <!-- Download Section -->
-    <section class="download-section">
+    <section class="download-card">
       <div class="input-group">
-        <input type="text" id="urlInput" class="url-input" placeholder="Paste link here..." data-i18n-placeholder="input_placeholder">
-        <button id="downloadBtn" class="download-btn" data-i18n="download_btn">Download</button>
+        <input type="text" id="urlInput" class="url-input" placeholder="여기에 영상 링크를 붙여넣으세요..." data-i18n-placeholder="input_placeholder">
+        <button id="downloadBtn" class="download-btn">
+          <i class="fas fa-download"></i> <span data-i18n="download_btn">다운로드</span>
+        </button>
       </div>
 
-      <!-- UI States -->
-      <div id="loadingUI" class="loading-ui hidden">
+      <!-- State: Loading -->
+      <div id="loadingUI" class="status-ui loading hidden">
         <div class="spinner"></div>
-        <p class="loading-text" data-i18n="loading">Analyzing video...</p>
+        <p class="status-text" data-i18n="loading">영상 분석 중...</p>
       </div>
 
-      <div id="successUI" class="success-ui hidden">
-        <div class="success-title">✅ <span data-i18n="started">Request Sent</span></div>
-        <p class="waiting-info" data-i18n="save_log">The save location window will appear shortly (within 20 seconds). Please do not close this page.</p>
+      <!-- State: Success & Progress -->
+      <div id="successUI" class="status-ui success hidden">
+        <div class="status-icon"><i class="fas fa-check-circle"></i></div>
+        <h3 data-i18n="success_title">✅ 요청 완료</h3>
+        <p class="status-desc" data-i18n="started">처리가 시작되었습니다! 곧 다운로드가 진행됩니다.</p>
         
-        <!-- [추가] 실시간 진행률 게이지 바 -->
-        <div id="progressContainer" class="progress-container hidden">
-            <div class="progress-bar-outer">
-                <div id="progressBar" class="progress-bar-fill"></div>
-            </div>
-            <p id="progressText">0%</p>
+        <div id="progressContainer" class="progress-container">
+          <div class="progress-bar-wrapper">
+            <div id="progressBar" class="progress-fill"></div>
+          </div>
+          <div class="progress-info">
+            <span id="progressText">0%</span>
+            <span class="pulse-dot"></span>
+          </div>
         </div>
 
-        <button onclick="resetForm()" class="download-again-btn" data-i18n="download_another">Download Another</button>
+        <p class="small-notice" data-i18n="save_log">저장 위치 선택 창이 나타날 때까지 최대 20초 정도 소요될 수 있습니다. 창이 뜰 때까지 잠시만 기다려 주세요.</p>
+        <button onclick="resetForm()" class="btn-secondary" data-i18n="download_another">추가 다운로드</button>
       </div>
 
-      <div id="errorUI" class="error-ui hidden">
-        <div class="error-title">❌ <span data-i18n="error_occurred">Error</span></div>
-        <p id="errorMessage" class="error-message">Failed to process video.</p>
-        <button onclick="resetForm()" class="retry-btn" data-i18n="retry_btn">Retry</button>
+      <!-- State: Error -->
+      <div id="errorUI" class="status-ui error hidden">
+        <div class="status-icon"><i class="fas fa-exclamation-triangle"></i></div>
+        <h3 data-i18n="error_occurred">❌ 오류 발생</h3>
+        <p id="errorMessage" class="error-msg">다운로드 처리에 실패했습니다.</p>
+        <button onclick="resetForm()" class="btn-primary" data-i18n="retry_btn">다시 시도</button>
       </div>
     </section>
 
-    <!-- Ad Space 1 -->
+    <!-- Ad Space -->
     <div class="ad-section">
-        <!-- Placeholder for Adsterra 300x250 -->
-        <div style="background:#eee; height:250px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
-            <span style="color:#aaa;">Advertisement</span>
-        </div>
+      <div class="ad-placeholder">
+        <span>ADVERTISEMENT</span>
+      </div>
     </div>
 
     <!-- Features -->
     <section class="features">
       <div class="feature-item">
-        <span class="feature-icon">🚀</span>
-        <h3 data-i18n="feature_fast_title">Ultra Fast</h3>
-        <p data-i18n="feature_fast_desc">High-speed processing</p>
+        <div class="feature-icon">🚀</div>
+        <h4 data-i18n="feature_fast_title">초고속 다운로드</h4>
+        <p data-i18n="feature_fast_desc">몇 초 만에 영상을 소장하세요</p>
       </div>
       <div class="feature-item">
-        <span class="feature-icon">🎥</span>
-        <h3 data-i18n="feature_hq_title">Full HD</h3>
-        <p data-i18n="feature_hq_desc">Best quality provided</p>
+        <div class="feature-icon">💎</div>
+        <h4 data-i18n="feature_hq_title">고화질 유지</h4>
+        <p data-i18n="feature_hq_desc">가능한 최상의 화질을 제공합니다</p>
       </div>
       <div class="feature-item">
-        <span class="feature-icon">✨</span>
-        <h3 data-i18n="feature_wm_title">No Watermark</h3>
-        <p data-i18n="feature_wm_desc">Clean video saves</p>
+        <div class="feature-icon">✨</div>
+        <h4 data-i18n="feature_wm_title">워터마크 제거</h4>
+        <p data-i18n="feature_wm_desc">깨끗한 원본 그대로 다운로드</p>
       </div>
       <div class="feature-item">
-        <span class="feature-icon">🛡️</span>
-        <h3 data-i18n="feature_sec_title">Secure</h3>
-        <p data-i18n="feature_sec_desc">Privacy protected</p>
+        <div class="feature-icon">🛡️</div>
+        <h4 data-i18n="feature_sec_title">안전한 보안</h4>
+        <p data-i18n="feature_sec_desc">사용자의 개인정보를 보호합니다</p>
       </div>
     </section>
 
     <!-- FAQ -->
     <section class="faq">
-      <h2 data-i18n="faq_title">Frequently Asked Questions</h2>
-      <div class="faq-item">
-        <button class="faq-question" data-i18n="faq_q1">Which sites are supported?</button>
-        <div class="faq-answer" data-i18n="faq_a1">Currently TikTok, Instagram, and YouTube. Just paste the link.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question" data-i18n="faq_q2">Is it free?</button>
-        <div class="faq-answer" data-i18n="faq_a2">Yes, completely free with no registration required.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question" data-i18n="faq_q3">Where are videos saved?</button>
-        <div class="faq-answer" data-i18n="faq_a3">Videos are streamed directly, never stored on our servers.</div>
+      <h2 class="section-title" data-i18n="faq_title">자주 묻는 질문</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span data-i18n="faq_q1">어떤 플랫폼을 지원하나요?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer" data-i18n="faq_a1">틱톡, 인스타그램(릴스), 유튜브를 지원합니다. URL만 붙여넣으면 끝!</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span data-i18n="faq_q2">정말 무료인가요?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer" data-i18n="faq_a2">네! TAEO는 누구나 무료로 이용할 수 있는 서비스입니다.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span data-i18n="faq_q3">영상이 어디에 저장되나요?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer" data-i18n="faq_a3">서버에 영구 저장되지 않고 즉시 사용자에게 스트리밍됩니다. 안심하세요!</div>
+        </div>
       </div>
     </section>
 
-    <!-- Copyright Notice -->
-    <section class="legal-notice">
-        <p><strong><i class="fas fa-exclamation-triangle"></i> <span data-i18n="legal_notice_title">Notice:</span></strong> <span data-i18n="legal_notice_desc">Download content only with owner's permission. TAEO is a tool for personal use.</span></p>
-    </section>
+    <div class="legal-box">
+      <p><i class="fas fa-info-circle"></i> <span data-i18n="legal_notice_desc">반드시 저작권자의 허가를 받은 콘텐츠만 다운로드하세요. TAEO는 도구일 뿐이며 사용자의 이용 방식에 책임을 지지 않습니다.</span></p>
+    </div>
   </main>
 
   <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-links">
-        <a href="/terms.html">Terms</a>
-        <span class="separator">|</span>
-        <a href="/privacy.html">Privacy</a>
-        <span class="separator">|</span>
-        <a href="/contact.html">Contact</a>
-      </div>
-      <p class="footer-disclaimer">&copy; 2026 TAEO Video Downloader. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="/terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/contact.html">Contact</a>
     </div>
+    <p class="copyright">&copy; 2026 TAEO Video Downloader. All rights reserved.</p>
   </footer>
 
   <script src="/main.js"></script>
