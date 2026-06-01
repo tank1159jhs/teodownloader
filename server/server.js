@@ -58,11 +58,12 @@ const PLATFORM_CONFIGS = {
     format: 'bv+ba/b',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
     referer: 'https://www.youtube.com/',
-    useProxy: false, // 유튜브는 프록시 없이 직접 연결이 보통 더 빠름
+    useProxy: true, // 봇 차단을 피하기 위해 프록시 필수 사용
     extraArgs: [
       '--extractor-args', 'youtube:player_client=android,web',
       '--force-ipv4',
       '--no-playlist',
+      '--no-call-home',
       '--no-check-certificates'
     ]
   },
