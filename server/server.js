@@ -20,7 +20,7 @@ app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 const FRONTEND_PATH = path.join(__dirname, '../frontend');
 
-// [성능 최적화] RAM 디스크 사용
+// [성능 최적화] RAM 디스크 사용 (HDD 병목 제거)
 const TEMP_DIR = '/dev/shm/taeo_downloads';
 if (!fs.existsSync(TEMP_DIR)) {
   fs.mkdirSync(TEMP_DIR, { recursive: true });
@@ -37,7 +37,7 @@ const MAX_FILE_SIZE = 1 * 1024 * 1024 * 1024; // 1GB
 const CONCURRENT_JOBS = 5;
 const DOWNLOAD_TIMEOUT = 10 * 60 * 1000;
 const RATE_LIMIT_WINDOW = 60 * 1000;
-const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_MAX = 10;
 
 // =================================
 // 전역 상태 및 캐시
@@ -46,7 +46,7 @@ let activeJobs = 0;
 const ipRequestMap = new Map();
 const metadataCache = new Map();
 const pendingAnalyzes = new Map();
-const jobProgress = new Map(); // 진행률 추적을 위한 전역 변수
+const jobProgress = new Map();
 
 function setCache(url, data) {
   metadataCache.set(url, { data, timestamp: Date.now() });
@@ -146,7 +146,7 @@ function getPlatformConfig(urlString) {
   return null;
 }
 
-async function executeYtDlp(args, config = null, timeout = DOWNLOAD_TIMEOUT, useAccel = false, jobId = null) {
+async function executeYtDlp(args, config = null, timeout = DOWNLOAD_TIMEOUT, jobId = null) {
   return new Promise((resolve, reject) => {
     let stdout = '';
     let stderr = '';
@@ -161,18 +161,8 @@ async function executeYtDlp(args, config = null, timeout = DOWNLOAD_TIMEOUT, use
     const cookiesPath = process.env.YTDLP_COOKIES || '/home/opc/cookies.txt';
     if (fs.existsSync(cookiesPath)) ytdlpArgs.push('--cookies', cookiesPath);
     
-    const hasProxy = process.env.YTDLP_PROXY && (!config || config.useProxy !== false);
-    if (hasProxy) {
+    if (process.env.YTDLP_PROXY && (!config || config.useProxy !== false)) {
       ytdlpArgs.push('--proxy', process.env.YTDLP_PROXY);
-    }
-
-    if (useAccel) {
-      ytdlpArgs.push('--downloader', 'aria2c');
-      const ariaArgs = ['-x 16', '-s 16', '-j 16', '-k 1M', '--stream-piece-selector=random'];
-      if (hasProxy) {
-        ariaArgs.push(`--all-proxy=${process.env.YTDLP_PROXY}`);
-      }
-      ytdlpArgs.push('--downloader-args', `aria2c:${ariaArgs.join(' ')}`);
     }
 
     const proc = spawn('yt-dlp', ytdlpArgs, { timeout });
@@ -199,6 +189,7 @@ async function executeYtDlp(args, config = null, timeout = DOWNLOAD_TIMEOUT, use
 function mapYtDlpErrorMessage(errorMessage) {
   if (errorMessage.includes('Sign in to confirm you’re not a bot')) return '유튜브 봇 차단 발생. 잠시 후 다시 시도해 주세요.';
   if (errorMessage.includes('video not found')) return '영상을 찾을 수 없습니다. URL을 확인해 주세요.';
+  if (errorMessage.includes('Unsupported URL')) return '지원하지 않는 URL 형식입니다. 영상 상세 주소를 입력해 주세요.';
   return '다운로드 실패. 다시 시도해 주세요.';
 }
 
@@ -222,7 +213,10 @@ app.get('/api/progress/:id', (req, res) => {
   const interval = setInterval(() => {
     const progress = jobProgress.get(id) || 0;
     res.write(`data: ${JSON.stringify({ progress })}\n\n`);
-    if (progress >= 100) clearInterval(interval);
+    if (progress >= 100) {
+      clearInterval(interval);
+      res.end();
+    }
   }, 500);
 
   req.on('close', () => clearInterval(interval));
@@ -288,6 +282,7 @@ app.post('/api/download', async (req, res) => {
       throw new Error('FILE_TOO_LARGE');
     }
 
+    // [성능 극대화] aria2c 대신 yt-dlp 자체 멀티 스레딩 기능 사용 (프록시 완벽 지원)
     console.log(`[ULTRA-ACCEL] ${metadata.title} -> RAM Disk`);
     const downloadArgs = [
       url,
@@ -295,11 +290,12 @@ app.post('/api/download', async (req, res) => {
       '-o', tempFilePath,
       '--no-part',
       '--merge-output-format', 'mp4',
-      '--postprocessor-args', 'ffmpeg:-movflags frag_keyframe+empty_moov'
+      '--postprocessor-args', 'ffmpeg:-movflags frag_keyframe+empty_moov',
+      '--concurrent-fragments', '16' // 16분할 병렬 다운로드 (aria2c급 속도)
     ];
     
     jobProgress.set(progressId, 0);
-    await executeYtDlp(downloadArgs, config, DOWNLOAD_TIMEOUT, true, progressId);
+    await executeYtDlp(downloadArgs, config, DOWNLOAD_TIMEOUT, progressId);
 
     const cleanTitle = (metadata.title || randomId).replace(/[\\/:*?"<>|]/g, "").substring(0, 80);
     res.setHeader('Content-Type', 'video/mp4');
