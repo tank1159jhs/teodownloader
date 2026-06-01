@@ -58,11 +58,11 @@ const PLATFORM_CONFIGS = {
     format: 'bv+ba/b',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
     referer: 'https://www.youtube.com/',
+    useProxy: false, // 유튜브는 프록시 없이 직접 연결이 보통 더 빠름
     extraArgs: [
       '--extractor-args', 'youtube:player_client=android,web',
       '--force-ipv4',
       '--no-playlist',
-      '--no-call-home',
       '--no-check-certificates'
     ]
   },
@@ -71,6 +71,7 @@ const PLATFORM_CONFIGS = {
     format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://www.google.com/',
+    useProxy: true,
     extraArgs: ['--no-playlist']
   },
   instagram: {
@@ -78,6 +79,7 @@ const PLATFORM_CONFIGS = {
     format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://www.google.com/',
+    useProxy: true,
     extraArgs: ['--no-playlist']
   },
   twitter: {
@@ -85,6 +87,7 @@ const PLATFORM_CONFIGS = {
     format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://x.com/',
+    useProxy: true,
     extraArgs: ['--no-playlist']
   }
 };
@@ -166,9 +169,11 @@ function executeYtDlp(args, config = null, timeout = DOWNLOAD_TIMEOUT) {
       ytdlpArgs.push('--cookies', cookiesPath);
     }
     
-    if (process.env.YTDLP_PROXY) {
+    // 플랫폼 설정에 따라 프록시 사용 여부 결정 (유튜브는 제외 가능)
+    if (process.env.YTDLP_PROXY && (!config || config.useProxy !== false)) {
       ytdlpArgs.push('--proxy', process.env.YTDLP_PROXY);
     }
+    
     const proc = spawn('yt-dlp', ytdlpArgs, {
       stdio: ['ignore', 'pipe', 'pipe'],
       timeout,
@@ -435,8 +440,5 @@ process.on('uncaughtException', (err) => {
   console.error('[UNCAUGHT]', err);
 });
 process.on('unhandledRejection', (err) => {
-  console.error('[UNHANDLED REJECTION]', err);
-});
-r) => {
   console.error('[UNHANDLED REJECTION]', err);
 });
