@@ -71,9 +71,29 @@ html, body {
 .hero-subtitle {
   font-size: 1.5rem;
   font-weight: 700;
-  margin: 0.5rem 0 1rem 0;
+  margin: 0.5rem 0 1.5rem 0;
   opacity: 0.9;
 }
+.brand-badges {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  opacity: 0.85;
+}
+.brand-badges i {
+  transition: transform 0.2s;
+}
+.brand-badges i:hover {
+  transform: scale(1.2);
+  opacity: 1;
+}
+.fa-tiktok { color: #fff; }
+.fa-instagram { color: #E1306C; }
+.fa-youtube { color: #FF0000; }
+.fa-twitter { color: #1DA1F2; }
+
 .hero-description {
   max-width: 600px;
   margin: 0 auto;
