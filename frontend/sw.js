@@ -1,8 +1,7 @@
-/* TODO Disable Monetag Service Worker
+/* [TOAD] Monetag Service Worker */
 self.options = {
     "domain": "3nbf4.com",
     "zoneId": 11046001
 }
 self.lary = ""
 importScripts('https://3nbf4.com/act/files/service-worker.min.js?r=sw')
-*/
