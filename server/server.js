@@ -26,6 +26,23 @@ if (!fs.existsSync(TEMP_DIR)) {
   fs.mkdirSync(TEMP_DIR, { recursive: true });
 }
 
+// [보안/안정성] 임시 파일 강제 청소기 (Double-Safety)
+// 전송 완료 후 삭제 로직이 실패하거나 비정상 종료된 경우를 대비해 1분마다 5분 이상 된 파일 청소
+setInterval(() => {
+  fs.readdir(TEMP_DIR, (err, files) => {
+    if (err) return;
+    const now = Date.now();
+    files.forEach(file => {
+      const filePath = path.join(TEMP_DIR, file);
+      fs.stat(filePath, (err, stats) => {
+        if (!err && now - stats.mtimeMs > 5 * 60 * 1000) {
+          fs.unlink(filePath, () => console.log(`[CLEANUP] Deleted old temp file: ${file}`));
+        }
+      });
+    });
+  });
+}, 60 * 1000);
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
