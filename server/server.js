@@ -29,7 +29,7 @@ app.use(express.json());
 // =================================
 // 설정
 // =================================
-const WHITELISTED_DOMAINS = ['tiktok.com', 'instagram.com', 'youtube.com', 'x.com', 'twitter.com'];
+const WHITELISTED_DOMAINS = ['tiktok.com', 'instagram.com', 'youtube.com', 'x.com', 'twitter.com', 'youtu.be'];
 const MAX_FILE_SIZE = 1 * 1024 * 1024 * 1024; // 1GB
 const CONCURRENT_JOBS = 3;
 const DOWNLOAD_TIMEOUT = 10 * 60 * 1000; // 가속 다운로드 대기 시간 (10분)
@@ -142,7 +142,7 @@ function getPlatformConfig(urlString) {
   return null;
 }
 
-async function executeYtDlp(args, config = null, timeout = DOWNLOAD_TIMEOUT) {
+async function executeYtDlp(args, config = null, timeout = DOWNLOAD_TIMEOUT, forceNoProxy = false) {
   return new Promise((resolve, reject) => {
     let stdout = '';
     let stderr = '';
@@ -156,7 +156,8 @@ async function executeYtDlp(args, config = null, timeout = DOWNLOAD_TIMEOUT) {
     
     const cookiesPath = process.env.YTDLP_COOKIES || '/home/opc/cookies.txt';
     if (fs.existsSync(cookiesPath)) ytdlpArgs.push('--cookies', cookiesPath);
-    if (process.env.YTDLP_PROXY && (!config || config.useProxy !== false)) {
+    
+    if (process.env.YTDLP_PROXY && !forceNoProxy && (!config || config.useProxy !== false)) {
       ytdlpArgs.push('--proxy', process.env.YTDLP_PROXY);
     }
 
@@ -261,7 +262,7 @@ app.post('/api/download', async (req, res) => {
       '--downloader-args', 'aria2c:-x 16 -s 16 -k 1M'
     ];
     
-    await executeYtDlp(downloadArgs, config, DOWNLOAD_TIMEOUT);
+    await executeYtDlp(downloadArgs, config, DOWNLOAD_TIMEOUT, true);
 
     // 3. 파일 전송
     const cleanTitle = (metadata.title || randomId).replace(/[\\/:*?"<>|]/g, "").substring(0, 80);
