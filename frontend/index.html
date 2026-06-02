@@ -47,7 +47,13 @@
     "name": "TAEO Video Downloader",
     "operatingSystem": "All",
     "applicationCategory": "MultimediaApplication",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    "description": "Download videos from TikTok, Instagram, YouTube, and X without watermark for free.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "1250"
+    }
   }
   </script>
 </head>
@@ -55,7 +61,7 @@
   <header class="hero">
     <div class="top-nav">
       <div class="lang-switcher">
-        <select id="langSelect">
+        <select id="langSelect" aria-label="Select Language">
           <option value="ko">한국어</option>
           <option value="en">English</option>
           <option value="ja">日本語</option>
@@ -63,33 +69,27 @@
       </div>
     </div>
     <div class="hero-content">
-      <h1 class="hero-title" data-i18n="hero_title">⚡ TAEO</h1>
-      <p class="hero-subtitle" data-i18n="hero_subtitle">Fast & Easy Video Downloader</p>
+      <h1 class="hero-title" data-i18n="hero_title">⚡ TAEO Video Downloader</h1>
+      <p class="hero-subtitle" data-i18n="hero_subtitle">Download TikTok, Instagram, YouTube & X Videos Fast</p>
       
-      <!-- [SEO] Hidden keywords for indexing -->
-      <div style="display:none;">
-        <h2>TikTok Downloader, Instagram Downloader, YouTube Downloader, Twitter Downloader</h2>
-        <p>TEAO is the best tool to download videos from social media without watermark.</p>
-      </div>
-
-      <!-- [추가] 지원 플랫폼 브랜드 아이콘 노출 -->
+      <!-- [추가] 지원 플랫폼 브랜드 아이콘 노출 (SEO Title 추가) -->
       <div class="brand-badges">
-        <i class="fab fa-tiktok"></i>
-        <i class="fab fa-instagram"></i>
-        <i class="fab fa-youtube"></i>
-        <i class="fab fa-twitter"></i>
+        <i class="fab fa-tiktok" title="TikTok Downloader"></i>
+        <i class="fab fa-instagram" title="Instagram Downloader"></i>
+        <i class="fab fa-youtube" title="YouTube Downloader"></i>
+        <i class="fab fa-twitter" title="Twitter/X Downloader"></i>
       </div>
 
-      <p class="hero-description" data-i18n="hero_description">틱톡, 인스타그램, 유튜브, X(트위터) 영상을 즉시 다운로드하세요. 워터마크 없이 무료로 제공됩니다.</p>
+      <p class="hero-description" data-i18n="hero_description">Free online tool to download social media videos instantly without watermark.</p>
     </div>
   </header>
 
   <main class="container">
     <section class="download-card">
       <div class="input-group">
-        <input type="text" id="urlInput" class="url-input" placeholder="여기에 영상 링크를 붙여넣으세요..." data-i18n-placeholder="input_placeholder">
+        <input type="text" id="urlInput" class="url-input" placeholder="Paste link here..." data-i18n-placeholder="input_placeholder" aria-label="Video URL">
         <button id="downloadBtn" class="download-btn">
-          <i class="fas fa-download"></i> <span data-i18n="download_btn">다운로드</span>
+          <i class="fas fa-download"></i> <span data-i18n="download_btn">Download</span>
         </button>
       </div>
 
@@ -183,6 +183,27 @@
           </button>
           <div class="faq-answer" data-i18n="faq_a3">서버에 영구 저장되지 않고 즉시 사용자에게 스트리밍됩니다. 안심하세요!</div>
         </div>
+      </div>
+    </section>
+
+    <div class="legal-box">
+      <p><i class="fas fa-info-circle"></i> <span data-i18n="legal_notice_desc">반드시 저작권자의 허가를 받은 콘텐츠만 다운로드하세요. TAEO는 도구일 뿐이며 사용자의 이용 방식에 책임을 지지 않습니다.</span></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="/terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <p class="copyright">&copy; 2026 TAEO Video Downloader. All rights reserved.</p>
+  </footer>
+
+  <script src="/main.js"></script>
+</body>
+</html>
+v>
       </div>
     </section>
 

@@ -225,17 +225,18 @@ function mapYtDlpErrorMessage(errorMessage) {
 const SEO_TRANSLATIONS = {
   en: {
     title: "TAEO - Best TikTok, Instagram, YouTube & X Video Downloader",
-    description: "Download TikTok, Instagram, YouTube, and X (Twitter) videos instantly without watermark. Fastest and free tool."
+    description: "The fastest free tool to download social media videos without watermark. High quality MP4 support."
   },
   ko: {
     title: "TAEO - 최고의 틱톡, 인스타그램, 유튜브, X 영상 다운로더",
-    description: "워터마크 없는 틱톡, 인스타, 유튜브, X(트위터) 영상을 즉시 다운로드하세요. 가장 빠르고 무료인 도구입니다."
+    description: "워터마크 없는 소셜 미디어 영상을 즉시 다운로드하는 가장 빠른 무료 도구입니다."
   },
   ja: {
-    title: "TAEO - TikTok, Instagram, YouTube, X 動画ダウンロード保存",
-    description: "TikTok、Instagram、YouTube、X(Twitter)の動画を即座にダウンロード。ウォーターマークなし、完全無料의 最強ツール."
+    title: "TAEO - TikTok, Instagram, YouTube, X 動画保存・ダウンロード",
+    description: "TikTok、Instagram、YouTube、Xの動画をウォーターマークなしで保存する最強の無料ツールです。"
   }
 };
+
 
 function serveI18nIndex(req, res) {
   const lang = req.path.substring(1) || 'ko';
