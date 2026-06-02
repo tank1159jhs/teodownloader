@@ -49,7 +49,7 @@ app.use(express.json());
 // =================================
 // 설정
 // =================================
-const WHITELISTED_DOMAINS = ['tiktok.com', 'instagram.com', 'youtube.com', 'x.com', 'twitter.com', 'youtu.be'];
+const WHITELISTED_DOMAINS = ['tiktok.com', 'instagram.com', 'youtube.com', 'x.com', 'twitter.com', 'youtu.be', 'douyin.com', 'iesdouyin.com'];
 const MAX_FILE_SIZE = 1 * 1024 * 1024 * 1024; // 1GB
 const CONCURRENT_JOBS = 5;
 const DOWNLOAD_TIMEOUT = 10 * 60 * 1000;
@@ -98,6 +98,14 @@ const PLATFORM_CONFIGS = {
     format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     referer: 'https://www.google.com/',
+    useProxy: true,
+    extraArgs: ['--no-playlist']
+  },
+  douyin: {
+    domains: ['douyin.com', 'iesdouyin.com'],
+    format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    referer: 'https://www.douyin.com/',
     useProxy: true,
     extraArgs: ['--no-playlist']
   },
@@ -212,14 +220,58 @@ function mapYtDlpErrorMessage(errorMessage) {
 }
 
 // =================================
+// i18n SEO Injection Logic
+// =================================
+const SEO_TRANSLATIONS = {
+  en: {
+    title: "TAEO - Best TikTok, Instagram, YouTube & X Video Downloader",
+    description: "Download TikTok, Instagram, YouTube, and X (Twitter) videos instantly without watermark. Fastest and free tool."
+  },
+  ko: {
+    title: "TAEO - 최고의 틱톡, 인스타그램, 유튜브, X 영상 다운로더",
+    description: "워터마크 없는 틱톡, 인스타, 유튜브, X(트위터) 영상을 즉시 다운로드하세요. 가장 빠르고 무료인 도구입니다."
+  },
+  ja: {
+    title: "TAEO - TikTok, Instagram, YouTube, X 動画ダウンロード保存",
+    description: "TikTok、Instagram、YouTube、X(Twitter)の動画を即座にダウンロード。ウォーターマークなし、完全無料의 最強ツール."
+  }
+};
+
+function serveI18nIndex(req, res) {
+  const lang = req.path.substring(1) || 'ko';
+  const t = SEO_TRANSLATIONS[lang] || SEO_TRANSLATIONS['ko'];
+  
+  fs.readFile(path.join(FRONTEND_PATH, 'index.html'), 'utf8', (err, html) => {
+    if (err) return res.status(500).send('Internal Server Error');
+    
+    let injectedHtml = html
+      .replace('<html lang="ko">', `<html lang="${lang}">`)
+      .replace(/<title>.*?<\/title>/, `<title>${t.title}</title>`)
+      .replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${t.description}">`)
+      // Open Graph
+      .replace(/<meta property="og:title" content=".*?">/, `<meta property="og:title" content="${t.title}">`)
+      .replace(/<meta property="og:description" content=".*?">/, `<meta property="og:description" content="${t.description}">`)
+      // Twitter
+      .replace(/<meta property="twitter:title" content=".*?">/, `<meta property="twitter:title" content="${t.title}">`)
+      .replace(/<meta property="twitter:description" content=".*?">/, `<meta property="twitter:description" content="${t.description}">`);
+    
+    res.send(injectedHtml);
+  });
+}
+
+// =================================
 // 라우트
 // =================================
 app.use(cors());
 app.get(['/sw.js', '/verification.txt', '/verification.html'], (req, res) => {
   res.sendFile(path.join(FRONTEND_PATH, req.path.split('/').pop()));
 });
+
+// [SEO 최적화] 언어별 정적 HTML 서빙
+app.get(['/en', '/ko', '/ja'], serveI18nIndex);
+app.get('/', (req, res) => res.redirect('/ko/'));
+
 app.use(express.static(FRONTEND_PATH));
-app.get(['/en', '/ko', '/ja'], (req, res) => res.sendFile('index.html', { root: FRONTEND_PATH }));
 app.get('/api/health', (req, res) => res.json({ status: 'ok', activeJobs }));
 
 app.get('/api/progress/:id', (req, res) => {
