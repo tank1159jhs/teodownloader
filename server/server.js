@@ -213,49 +213,135 @@ async function executeYtDlp(args, config = null, timeout = DOWNLOAD_TIMEOUT, job
 }
 
 function mapYtDlpErrorMessage(errorMessage) {
-  if (errorMessage.includes('Sign in to confirm you’re not a bot')) return '유튜브 봇 차단 발생. 잠시 후 다시 시도해 주세요.';
-  if (errorMessage.includes('video not found')) return '영상을 찾을 수 없습니다. URL을 확인해 주세요.';
-  if (errorMessage.includes('Unsupported URL')) return '지원하지 않는 URL 형식입니다. 영상 상세 주소를 입력해 주세요.';
-  return '다운로드 실패. 다시 시도해 주세요.';
+  if (errorMessage.includes('Sign in to confirm you’re not a bot')) return 'ERR_BOT_BLOCKED';
+  if (errorMessage.includes('video not found')) return 'ERR_VIDEO_NOT_FOUND';
+  if (errorMessage.includes('Unsupported URL')) {
+    if (errorMessage.includes('tiktok.com/search')) return 'ERR_TIKTOK_SEARCH';
+    return 'ERR_UNSUPPORTED_URL';
+  }
+  if (errorMessage.includes('Unable to extract universal data')) return 'ERR_EXTRACT_FAILED';
+  return 'ERR_DOWNLOAD_FAILED';
 }
 
 // =================================
 // i18n SEO Injection Logic
 // =================================
+const SUPPORTED_LANGS = ['ko', 'en', 'ja', 'id', 'pt', 'es', 'vi', 'ru', 'hi', 'de'];
+const PLATFORM_MAP = {
+  'youtube-downloader': 'youtube',
+  'tiktok-downloader': 'tiktok',
+  'instagram-downloader': 'instagram',
+  'twitter-downloader': 'x',
+  'x-downloader': 'x'
+};
+
 const SEO_TRANSLATIONS = {
-  en: {
-    title: "TAEO - Best TikTok, Douyin, Instagram, YouTube & X Video Downloader",
-    description: "The fastest free tool to download videos from TikTok, Douyin, Instagram, YouTube, and X without watermark. High quality MP4 support."
-  },
   ko: {
-    title: "TAEO - 최고의 틱톡, 도우인(Douyin), 인스타그램, 유튜브, X 영상 다운로더",
-    description: "워터마크 없는 틱톡, 도우인, 인스타, 유튜브 영상을 즉시 다운로드하는 가장 빠른 무료 도구입니다."
+    home: { title: "TAEO - 최고의 틱톡, 도우인, 인스타, 유튜브, X 영상 다운로더", description: "워터마크 없는 틱톡, 도우인, 인스타, 유튜브 영상을 즉시 다운로드하는 가장 빠른 무료 도구입니다." },
+    youtube: { title: "TAEO - 유튜브 영상 다운로더 | 고화질 MP4 저장", description: "유튜브 영상을 워터마크 없이 고화질로 다운로드하세요. TAEO는 가장 빠르고 안전한 유튜브 저장 도구입니다." },
+    tiktok: { title: "TAEO - 틱톡 & 도우인 워터마크 제거 다운로더", description: "틱톡과 도우인 영상을 워터마크 없이 저장하세요. 틱톡 영상 다운로드의 가장 쉬운 방법, TAEO입니다." },
+    instagram: { title: "TAEO - 인스타그램 영상 및 릴스 다운로더", description: "인스타그램 릴스, 비디오, 스토리를 워터마크 없이 고화질로 저장하세요. 쉽고 빠른 인스타 다운로더." },
+    x: { title: "TAEO - X (트위터) 영상 다운로더 | 고화질 트위터 저장", description: "X(트위터) 영상을 즉시 고화질 MP4로 다운로드하세요. 워터마크 없는 트위터 영상 저장 도구." }
+  },
+  en: {
+    home: { title: "TAEO - Best TikTok, Douyin, Instagram, YouTube & X Video Downloader", description: "Download TikTok, Douyin, Instagram, YouTube, and X videos without watermark instantly. Fastest free video downloader." },
+    youtube: { title: "TAEO - YouTube Video Downloader | Download High Quality MP4", description: "Download YouTube videos in high quality MP4. TAEO is the fastest and safest tool to save YouTube videos for free." },
+    tiktok: { title: "TAEO - TikTok & Douyin Downloader | No Watermark", description: "Download TikTok and Douyin videos without watermark. The easiest way to save TikTok videos online with TAEO." },
+    instagram: { title: "TAEO - Instagram Video & Reels Downloader", description: "Download Instagram Reels, videos, and stories in high quality without watermark. Fast and free Instagram downloader." },
+    x: { title: "TAEO - X (Twitter) Video Downloader | Save Twitter Videos", description: "Download X (Twitter) videos instantly in high quality MP4. Best tool to save Twitter videos without watermark." }
   },
   ja: {
-    title: "TAEO - TikTok, Douyin, Instagram, YouTube, X 動画保存・ダウンロード",
-    description: "TikTok、Douyin(抖音)、Instagram、YouTube、Xの動画をウォーターマークなしで保存하는 最強의 무료 툴."
+    home: { title: "TAEO - TikTok, Douyin, Instagram, YouTube, X 動画ダウンロード", description: "TikTok、Douyin(抖音)、Instagram、YouTube、Xの動画を即座にダウンロード。ウォーターマークなし、完全無料의 最強ツール." },
+    youtube: { title: "TAEO - YouTube 動画保存・ダウンロード | 高画質 MP4", description: "YouTube動画をウォーターマークなしで高画質保存。TAEOは最速で安全なYouTubeダウンロードツールです。" },
+    tiktok: { title: "TAEO - TikTok & Douyin 保存 | ウォーターマークなし", description: "TikTokやDouyinの動画をロゴなしで保存。TikTok動画保存の最も簡単な方法はTAEOです。" },
+    instagram: { title: "TAEO - Instagram 動画 & リール 保存", description: "Instagramのリール、動画、ストーリーをロゴなし高画質で保存。素早く簡単なインスタ保存ツール。" },
+    x: { title: "TAEO - X (Twitter) 動画保存・ダウンロード", description: "X(Twitter)の動画を即座に高画질 MP4로 다운로드. 워터마크 없는 트위터 영상 저장." }
+  },
+  id: {
+    home: { title: "TAEO - Pengunduh Video TikTok, Douyin, Instagram, YouTube & X Terbaik", description: "Unduh video TikTok, Douyin, Instagram, YouTube, dan X tanpa watermark secara instan. Pengunduh video gratis tercepat." },
+    youtube: { title: "TAEO - Pengunduh Video YouTube | Simpan MP4 Kualitas Tinggi", description: "Unduh video YouTube dalam MP4 kualitas tinggi. TAEO adalah alat tercepat dan teraman untuk menyimpan video YouTube secara gratis." },
+    tiktok: { title: "TAEO - Pengunduh TikTok & Douyin | Tanpa Watermark", description: "Unduh video TikTok dan Douyin tanpa watermark. Cara termudah untuk menyimpan video TikTok online dengan TAEO." },
+    instagram: { title: "TAEO - Pengunduh Video & Reels Instagram", description: "Unduh Instagram Reels, video, dan cerita dalam kualitas tinggi tanpa watermark. Pengunduh Instagram yang cepat dan gratis." },
+    x: { title: "TAEO - Pengunduh Video X (Twitter) | Simpan Video Twitter", description: "Unduh video X (Twitter) secara instan dalam MP4 kualitas tinggi. Alat terbaik untuk menyimpan video Twitter tanpa watermark." }
+  },
+  pt: {
+    home: { title: "TAEO - Melhor Downloader de Vídeo para TikTok, Douyin, Instagram, YouTube e X", description: "Baixe vídeos do TikTok, Douyin, Instagram, YouTube e X sem marca d'água instantaneamente. O downloader de vídeo gratuito mais rápido." },
+    youtube: { title: "TAEO - Downloader de Vídeo do YouTube | Salvar MP4 de Alta Qualidade", description: "Baixe vídeos do YouTube em MP4 de alta qualidade. TAEO é a ferramenta mais rápida e segura para salvar vídeos do YouTube gratuitamente." },
+    tiktok: { title: "TAEO - Downloader do TikTok e Douyin | Sem Marca d'Água", description: "Baixe vídeos do TikTok e Douyin sem marca d'água. A maneira mais fácil de salvar vídeos do TikTok online com o TAEO." },
+    instagram: { title: "TAEO - Downloader de Vídeos e Reels do Instagram", description: "Baixe Reels, vídeos e stories do Instagram em alta qualidade sem marca d'água. Downloader do Instagram rápido e gratuito." },
+    x: { title: "TAEO - Downloader de Vídeo do X (Twitter) | Salvar Vídeos do Twitter", description: "Baixe vídeos do X (Twitter) instantaneamente em MP4 de alta qualidade. A melhor ferramenta para salvar vídeos do Twitter sem marca d'água." }
+  },
+  es: {
+    home: { title: "TAEO - El mejor descargador de videos de TikTok, Douyin, Instagram, YouTube y X", description: "Descarga videos de TikTok, Douyin, Instagram, YouTube y X sin marca de agua al instante. El descargador de videos gratuito más rápido." },
+    youtube: { title: "TAEO - Descargador de videos de YouTube | Guardar MP4 de alta calidad", description: "Descarga videos de YouTube en MP4 de alta calidad. TAEO es la herramienta más rápida y segura para guardar videos de YouTube gratis." },
+    tiktok: { title: "TAEO - Descargador de TikTok y Douyin | Sin marca de agua", description: "Descarga videos de TikTok y Douyin sin marca de agua. La forma más fácil de guardar videos de TikTok en línea con TAEO." },
+    instagram: { title: "TAEO - Descargador de videos y Reels de Instagram", description: "Descarga Instagram Reels, videos e historias en alta calidad sin marca de agua. Descargador de Instagram rápido y gratuito." },
+    x: { title: "TAEO - Descargador de videos de X (Twitter) | Guardar videos de Twitter", description: "Descarga videos de X (Twitter) al instante en MP4 de alta calidad. La mejor herramienta para guardar videos de Twitter sin marca de agua." }
+  },
+  vi: {
+    home: { title: "TAEO - Trình tải video TikTok, Douyin, Instagram, YouTube & X tốt nhất", description: "Tải video TikTok, Douyin, Instagram, YouTube và X không có logo ngay lập tức. Trình tải video miễn phí nhanh nhất." },
+    youtube: { title: "TAEO - Trình tải video YouTube | Lưu MP4 chất lượng cao", description: "Tải video YouTube ở định dạng MP4 chất lượng cao. TAEO là công cụ nhanh nhất và an toàn nhất để lưu video YouTube miễn phí." },
+    tiktok: { title: "TAEO - Trình tải TikTok & Douyin | Không có logo", description: "Tải video TikTok và Douyin không có logo. Cách dễ nhất để lưu video TikTok trực tuyến với TAEO." },
+    instagram: { title: "TAEO - Trình tải video & Reels Instagram", description: "Tải Instagram Reels, video và tin câu chuyện ở chất lượng cao không có logo. Trình tải Instagram nhanh và miễn phí." },
+    x: { title: "TAEO - Trình tải video X (Twitter) | Lưu video Twitter", description: "Tải video X (Twitter) ngay lập tức ở định dạng MP4 chất lượng cao. Công cụ tốt nhất để lưu video Twitter không có logo." }
+  },
+  ru: {
+    home: { title: "TAEO - Лучший загрузчик видео из TikTok, Douyin, Instagram, YouTube и X", description: "Скачивайте видео из TikTok, Douyin, Instagram, YouTube и X без водяных знаков мгновенно. Самый быстрый бесплатный загрузчик видео." },
+    youtube: { title: "TAEO - Загрузчик видео с YouTube | Скачать MP4 в высоком качестве", description: "Скачивайте видео с YouTube в высоком качестве MP4. TAEO — самый быстрый и безопасный инструмент для бесплатного сохранения видео с YouTube." },
+    tiktok: { title: "TAEO - Загрузчик из TikTok и Douyin | Без водяных знаков", description: "Скачивайте видео из TikTok и Douyin без водяных знаков. Самый простой способ сохранить видео из TikTok онлайн с помощью TAEO." },
+    instagram: { title: "TAEO - Загрузчик видео и Reels из Instagram", description: "Скачивайте Reels, видео и истории из Instagram в высоком качестве без водяных знаков. Быстрый и бесплатный загрузчик из Instagram." },
+    x: { title: "TAEO - Загрузчик видео из X (Twitter) | Сохранить видео из Twitter", description: "Скачивайте видео из X (Twitter) мгновенно в высоком качестве MP4. Лучший инструмент для сохранения видео из Twitter без водяных знаков." }
+  },
+  hi: {
+    home: { title: "TAEO - सर्वश्रेष्ठ TikTok, Douyin, Instagram, YouTube और X वीडियो डाउनलोडर", description: "TikTok, Douyin, Instagram, YouTube और X वीडियो बिना वॉटरमार्क के तुरंत डाउनलोड करें। सबसे तेज़ मुफ़्त वीडियो डाउनलोडर।" },
+    youtube: { title: "TAEO - YouTube वीडियो डाउनलोडर | उच्च गुणवत्ता MP4 सहेजें", description: "उच्च गुणवत्ता वाले MP4 में YouTube वीडियो डाउनलोड करें। TAEO YouTube वीडियो को मुफ्त में सहेजने का सबसे तेज़ और सुरक्षित उपकरण है।" },
+    tiktok: { title: "TAEO - TikTok और Douyin डाउनलोडर | बिना वॉटरमार्क के", description: "बिना वॉटरमार्क के TikTok और Douyin वीडियो डाउनलोड करें। TAEO के साथ TikTok वीडियो को ऑनलाइन सहेजने का सबसे आसान तरीका।" },
+    instagram: { title: "TAEO - Instagram वीडियो और रील्स डाउनलोडer", description: "Instagram रील्स, वीडियो और कहानियों को बिना वॉटरमार्क के उच्च गुणवत्ता में डाउनलोड करें। तेज़ और मुफ़्त Instagram डाउनलोडर।" },
+    x: { title: "TAEO - X (Twitter) वीडियो डाउनलोडर | ट्विटर वीडियो सहेजें", description: "उच्च गुणवत्ता वाले MP4 में तुरंत X (Twitter) वीडियो डाउनलोड करें। ट्विटर वीडियो को बिना वॉटरमार्क के सहेजने के लिए सबसे अच्छा टूल।" }
+  },
+  de: {
+    home: { title: "TAEO - Bester Video Downloader für TikTok, Douyin, Instagram, YouTube & X", description: "Laden Sie TikTok-, Douyin-, Instagram-, YouTube- und X-Videos sofort ohne Wasserzeichen herunter. Der schnellste kostenlose Video-Downloader." },
+    youtube: { title: "TAEO - YouTube Video Downloader | Hochwertige MP4 speichern", description: "Laden Sie YouTube-Videos in hochwertigem MP4 herunter. TAEO ist das schnellste und sicherste Tool, um YouTube-Videos kostenlos zu speichern." },
+    tiktok: { title: "TAEO - TikTok & Douyin Downloader | Ohne Wasserzeichen", description: "Laden Sie TikTok- und Douyin-Videos ohne Wasserzeichen herunter. Der einfachste Weg, TikTok-Videos online mit TAEO zu speichern." },
+    instagram: { title: "TAEO - Instagram Video & Reels Downloader", description: "Laden Sie Instagram Reels, Videos und Stories in hoher Qualität ohne Wasserzeichen herunter. Schneller und kostenloser Instagram Downloader." },
+    x: { title: "TAEO - X (Twitter) Video Downloader | Twitter-Videos speichern", description: "Laden Sie X (Twitter) Videos sofort in hochwertigem MP4 herunter. Das beste Tool zum Speichern von Twitter-Videos ohne Wasserzeichen." }
   }
 };
 
-
-
 function serveI18nIndex(req, res) {
-  const lang = req.path.substring(1) || 'ko';
-  const t = SEO_TRANSLATIONS[lang] || SEO_TRANSLATIONS['ko'];
+  const lang = req.params.lang || 'ko';
+  const page = req.params.page || 'home';
+  const platform = PLATFORM_MAP[page] || 'home';
+  
+  const langData = SEO_TRANSLATIONS[lang] || SEO_TRANSLATIONS['ko'];
+  const t = langData[platform] || langData['home'];
   
   fs.readFile(path.join(FRONTEND_PATH, 'index.html'), 'utf8', (err, html) => {
     if (err) return res.status(500).send('Internal Server Error');
     
+    // Generate dynamic hreflang tags
+    const hreflangTags = SUPPORTED_LANGS.map(l => {
+      const path = page === 'home' ? `/${l}/` : `/${l}/${page}`;
+      return `<link rel="alternate" hreflang="${l}" href="https://teodown.com${path}">`;
+    }).join('\n  ');
+    
+    const xDefault = `<link rel="alternate" hreflang="x-default" href="https://teodown.com/${page === 'home' ? 'ko/' : 'ko/' + page}">`;
+
     let injectedHtml = html
       .replace('<html lang="ko">', `<html lang="${lang}">`)
       .replace(/<title>.*?<\/title>/, `<title>${t.title}</title>`)
       .replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${t.description}">`)
+      // Replace hardcoded canonical and hreflang block
+      .replace(/<link rel="canonical".*?hreflang="en".*?>/s, 
+        `<link rel="canonical" href="https://teodown.com${req.path}">\n  ${xDefault}\n  ${hreflangTags}`)
       // Open Graph
       .replace(/<meta property="og:title" content=".*?">/, `<meta property="og:title" content="${t.title}">`)
       .replace(/<meta property="og:description" content=".*?">/, `<meta property="og:description" content="${t.description}">`)
+      .replace(/<meta property="og:url" content=".*?">/, `<meta property="og:url" content="https://teodown.com${req.path}">`)
       // Twitter
       .replace(/<meta property="twitter:title" content=".*?">/, `<meta property="twitter:title" content="${t.title}">`)
-      .replace(/<meta property="twitter:description" content=".*?">/, `<meta property="twitter:description" content="${t.description}">`);
+      .replace(/<meta property="twitter:description" content=".*?">/, `<meta property="twitter:description" content="${t.description}">`)
+      .replace(/<meta property="twitter:url" content=".*?">/, `<meta property="twitter:url" content="https://teodown.com${req.path}">`);
     
     res.send(injectedHtml);
   });
@@ -269,8 +355,21 @@ app.get(['/sw.js', '/verification.txt', '/verification.html'], (req, res) => {
   res.sendFile(path.join(FRONTEND_PATH, req.path.split('/').pop()));
 });
 
-// [SEO 최적화] 언어별 정적 HTML 서빙
-app.get(['/en', '/ko', '/ja'], serveI18nIndex);
+// [SEO 최적화] 언어별 및 플랫폼별 정적 HTML 서빙
+app.get('/:lang([a-z]{2})/:page?', (req, res, next) => {
+  if (SUPPORTED_LANGS.includes(req.params.lang)) {
+    return serveI18nIndex(req, res);
+  }
+  next();
+});
+
+app.get(['/:lang([a-z]{2})', '/:lang([a-z]{2})/'], (req, res) => {
+  if (SUPPORTED_LANGS.includes(req.params.lang)) {
+    return res.redirect(`/${req.params.lang}/`);
+  }
+  res.status(404).end();
+});
+
 app.get('/', (req, res) => res.redirect('/ko/'));
 
 app.use(express.static(FRONTEND_PATH));

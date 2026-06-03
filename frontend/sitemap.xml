@@ -3,28 +3,801 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://teodown.com/ko/</loc>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/"/>
+    <priority>1.0</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/en/</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/"/>
     <priority>1.0</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
     <loc>https://teodown.com/ja/</loc>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/"/>
+    <priority>1.0</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/id/</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/"/>
+    <priority>1.0</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/pt/</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/"/>
+    <priority>1.0</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/es/</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/"/>
+    <priority>1.0</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/vi/</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/"/>
+    <priority>1.0</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/ru/</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/"/>
+    <priority>1.0</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/hi/</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/"/>
+    <priority>1.0</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/de/</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/"/>
+    <priority>1.0</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/ko/youtube-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/youtube-downloader"/>
     <priority>0.9</priority>
     <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://teodown.com/en/</loc>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/"/>
-    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/"/>
+    <loc>https://teodown.com/en/youtube-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/youtube-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/ja/youtube-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/youtube-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/id/youtube-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/youtube-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/pt/youtube-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/youtube-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/es/youtube-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/youtube-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/vi/youtube-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/youtube-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/ru/youtube-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/youtube-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/hi/youtube-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/youtube-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/de/youtube-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/youtube-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/youtube-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/ko/tiktok-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/tiktok-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/en/tiktok-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/tiktok-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/ja/tiktok-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/tiktok-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/id/tiktok-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/tiktok-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/pt/tiktok-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/tiktok-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/es/tiktok-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/tiktok-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/vi/tiktok-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/tiktok-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/ru/tiktok-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/tiktok-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/hi/tiktok-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/tiktok-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/de/tiktok-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/tiktok-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/tiktok-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/ko/instagram-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/instagram-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/en/instagram-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/instagram-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/ja/instagram-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/instagram-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/id/instagram-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/instagram-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/pt/instagram-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/instagram-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/es/instagram-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/instagram-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/vi/instagram-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/instagram-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/ru/instagram-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/instagram-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/hi/instagram-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/instagram-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/de/instagram-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/instagram-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/instagram-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/ko/x-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/x-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/en/x-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/x-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/ja/x-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/x-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/id/x-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/x-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/pt/x-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/x-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/es/x-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/x-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/vi/x-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/x-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/ru/x-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/x-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/hi/x-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/x-downloader"/>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://teodown.com/de/x-downloader</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://teodown.com/ko/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teodown.com/en/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://teodown.com/ja/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://teodown.com/id/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://teodown.com/pt/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://teodown.com/es/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://teodown.com/vi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://teodown.com/ru/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://teodown.com/hi/x-downloader"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://teodown.com/de/x-downloader"/>
     <priority>0.9</priority>
     <changefreq>daily</changefreq>
   </url>
