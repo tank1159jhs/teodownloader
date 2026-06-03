@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://teao.kro.kr/sitemap.xml
+Sitemap: https://teodown.com/sitemap.xml
