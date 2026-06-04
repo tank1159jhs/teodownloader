@@ -248,31 +248,32 @@ html, body {
 
 .error-msg { color: var(--error); margin-bottom: 1.5rem; }
 
-/* How to Use (Premium Minimalist Flow) */
+/* How to Use (Compact Horizontal Flow) */
 .how-to {
-  margin-top: 6rem;
-  padding: 4rem 0;
+  margin-top: 4rem;
+  padding: 3rem 0;
   background: linear-gradient(180deg, #fff 0%, #f8faff 100%);
   border-radius: 40px;
 }
 
 .howto-grid {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  margin-top: 4rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .howto-step {
-  flex: 1;
-  max-width: 340px;
   background: #fff;
-  padding: 3.5rem 2rem 2.5rem;
-  border-radius: 32px;
+  padding: 2.5rem 1.5rem;
+  border-radius: 28px;
   text-align: center;
   border: 1px solid rgba(0, 0, 0, 0.04);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  transition: all 0.4s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -283,41 +284,40 @@ html, body {
 .howto-step::before {
   content: attr(data-step);
   position: absolute;
-  top: -10px;
-  right: 10px;
-  font-size: 8rem;
+  top: -5px;
+  right: 15px;
+  font-size: 5rem;
   font-weight: 900;
-  color: rgba(37, 99, 235, 0.04);
+  color: rgba(37, 99, 235, 0.03);
   line-height: 1;
   z-index: 0;
 }
 
 .howto-step:hover {
-  transform: translateY(-15px);
+  transform: translateY(-8px);
   border-color: var(--primary);
-  box-shadow: 0 30px 60px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.08);
 }
 
 .step-icon {
-  font-size: 4rem;
-  margin-bottom: 2rem;
+  font-size: 3rem;
+  margin-bottom: 1.25rem;
   position: relative;
   z-index: 1;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
 }
 
 .howto-step h4 {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: var(--text-main);
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   position: relative;
   z-index: 1;
 }
 
 .howto-step p {
-  font-size: 1.05rem;
-  line-height: 1.7;
+  font-size: 0.95rem;
+  line-height: 1.5;
   color: var(--text-muted);
   font-weight: 500;
   position: relative;
@@ -325,15 +325,11 @@ html, body {
   margin: 0;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .howto-grid {
-    flex-direction: column;
-    align-items: center;
-    gap: 4rem;
-  }
-  .howto-step {
-    width: 90%;
+    grid-template-columns: 1fr;
     max-width: 450px;
+    gap: 2rem;
   }
 }
 

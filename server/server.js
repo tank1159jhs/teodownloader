@@ -104,12 +104,13 @@ const PLATFORM_CONFIGS = {
   douyin: {
     domains: ['douyin.com', 'iesdouyin.com'],
     format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
     referer: 'https://www.douyin.com/',
     useProxy: true,
     extraArgs: [
       '--no-playlist',
-      '--add-header', 'Cookie: ', // Some extraction issues fixed by empty cookie
+      '--add-header', 'Cookie: ',
+      '--add-header', 'Accept-Language: zh-CN,zh;q=0.9,en;q=0.8',
       '--extractor-args', 'douyin:no-watermark=true'
     ]
   },
@@ -154,10 +155,28 @@ function checkRateLimit(ip) {
   return true;
 }
 
-function validateUrl(urlString) {
+function normalizeUrl(urlString) {
   try {
     const url = new URL(urlString);
-    return { valid: ['http:', 'https:'].includes(url.protocol), url };
+    const hostname = url.hostname.toLowerCase();
+    
+    // Douyin Normalization
+    if (hostname.includes('douyin.com')) {
+      const modalId = url.searchParams.get('modal_id');
+      if (modalId) return `https://www.douyin.com/video/${modalId}`;
+    }
+    
+    return urlString;
+  } catch (err) {
+    return urlString;
+  }
+}
+
+function validateUrl(urlString) {
+  try {
+    const normalized = normalizeUrl(urlString);
+    const url = new URL(normalized);
+    return { valid: ['http:', 'https:'].includes(url.protocol), url, normalized };
   } catch (err) {
     return { valid: false };
   }
@@ -398,10 +417,12 @@ app.get('/api/progress/:id', (req, res) => {
 });
 
 app.post('/api/analyze', async (req, res) => {
-  const { url } = req.body;
-  if (!url) return res.status(400).end();
-  const validation = validateUrl(url);
+  const { url: rawUrl } = req.body;
+  if (!rawUrl) return res.status(400).end();
+  const validation = validateUrl(rawUrl);
   if (!validation.valid) return res.status(400).end();
+  
+  const url = validation.normalized;
   const config = getPlatformConfig(url);
   if (!config) return res.status(400).end();
 
@@ -427,9 +448,13 @@ app.post('/api/analyze', async (req, res) => {
 
 app.post('/api/download', async (req, res) => {
   const clientIp = getClientIp(req);
-  const { url, progressId: clientProgressId } = req.body;
-  if (!url) return res.status(400).json({ error: 'URL_REQUIRED' });
+  const { url: rawUrl, progressId: clientProgressId } = req.body;
+  if (!rawUrl) return res.status(400).json({ error: 'URL_REQUIRED' });
 
+  const validation = validateUrl(rawUrl);
+  if (!validation.valid) return res.status(400).json({ error: 'INVALID_URL' });
+  
+  const url = validation.normalized;
   if (!checkRateLimit(clientIp)) return res.status(429).json({ error: 'TOO_MANY_REQUESTS' });
   if (activeJobs >= CONCURRENT_JOBS) return res.status(429).json({ error: 'SERVER_BUSY' });
 
