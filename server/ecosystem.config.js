@@ -1,7 +1,7 @@
 export default {
   apps: [
     {
-      name: 'taeo-downloader',
+      name: 'teo-downloader',
       script: './server/server.js',
       instances: 1,
       exec_mode: 'fork',

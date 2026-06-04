@@ -1,4 +1,4 @@
-# TAEO Download Platform
+# TEO Download Platform
 
 TikTok, Instagram, YouTube 영상을 빠르고 안전하게 다운로드할 수 있는 웹 플랫폼입니다.
 
@@ -19,7 +19,7 @@ Cloudflare R2 (임시 저장소 + Presigned URL)
 ## 파일 구조
 
 ```
-/TaeoDownloader
+/TeoDownloader
   /server
     - server.js              # Express 서버 (모든 로직 포함)
     - package.json           # npm 의존성
@@ -50,7 +50,7 @@ Cloudflare R2 (임시 저장소 + Presigned URL)
 ### 로컬 테스트 (macOS/Linux)
 
 ```bash
-cd /Users/systemi/TaeoDownloader
+cd /Users/systemi/TeoDownloader
 npm install --prefix server
 cp server/.env.example server/.env
 # .env 파일 수정 (S3 credentials 입력)

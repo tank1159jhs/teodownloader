@@ -1,5 +1,5 @@
 {
-  "name": "taeo-downloader",
+  "name": "teo-downloader",
   "version": "1.0.0",
   "description": "Fast TikTok/Instagram/YouTube video downloader with zero-disk streaming",
   "main": "server.js",

@@ -248,101 +248,92 @@ html, body {
 
 .error-msg { color: var(--error); margin-bottom: 1.5rem; }
 
-/* How to Use (Process Flow) */
+/* How to Use (Premium Minimalist Flow) */
 .how-to {
-  margin-top: 5rem;
-  padding: 3rem 0;
-  position: relative;
+  margin-top: 6rem;
+  padding: 4rem 0;
+  background: linear-gradient(180deg, #fff 0%, #f8faff 100%);
+  border-radius: 40px;
 }
 
 .howto-grid {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  margin-top: 3rem;
-  position: relative;
-}
-
-/* Connector line on desktop */
-@media (min-width: 1024px) {
-  .howto-grid::before {
-    content: '';
-    position: absolute;
-    top: 60px;
-    left: 15%;
-    right: 15%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--border), transparent);
-    z-index: 0;
-  }
+  gap: 3rem;
+  margin-top: 4rem;
 }
 
 .howto-step {
   flex: 1;
-  max-width: 320px;
+  max-width: 340px;
   background: #fff;
-  padding: 3rem 2rem 2.5rem;
-  border-radius: 30px;
+  padding: 3.5rem 2rem 2.5rem;
+  border-radius: 32px;
   text-align: center;
-  border: 1px solid var(--border);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.04);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  z-index: 1;
+  overflow: hidden;
+}
+
+.howto-step::before {
+  content: attr(data-step);
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  font-size: 8rem;
+  font-weight: 900;
+  color: rgba(37, 99, 235, 0.04);
+  line-height: 1;
+  z-index: 0;
 }
 
 .howto-step:hover {
-  transform: translateY(-12px);
+  transform: translateY(-15px);
   border-color: var(--primary);
-  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.08);
-}
-
-.step-header {
-  position: absolute;
-  top: -18px;
-  background: var(--primary);
-  color: white;
-  padding: 6px 18px;
-  border-radius: 100px;
-  font-size: 0.85rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 30px 60px rgba(37, 99, 235, 0.1);
 }
 
 .step-icon {
-  font-size: 3.5rem;
-  margin-bottom: 1.5rem;
-  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+  font-size: 4rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
 }
 
 .howto-step h4 {
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   font-weight: 800;
   color: var(--text-main);
   margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .howto-step p {
   font-size: 1.05rem;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--text-muted);
   font-weight: 500;
+  position: relative;
+  z-index: 1;
   margin: 0;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1024px) {
   .howto-grid {
     flex-direction: column;
     align-items: center;
+    gap: 4rem;
   }
   .howto-step {
-    width: 100%;
-    max-width: 400px;
+    width: 90%;
+    max-width: 450px;
   }
 }
 

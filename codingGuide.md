@@ -1,4 +1,4 @@
-# TAEO Download Platform — Production-Ready Specification
+# TEO Download Platform — Production-Ready Specification
 
 ## 1. 프로젝트 목표
 - 실제 운영 가능한 수준

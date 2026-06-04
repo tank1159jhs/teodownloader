@@ -1,4 +1,4 @@
-# TAEO Downloader Operation Guide (OCI)
+# TEO Downloader Operation Guide (OCI)
 
 ## 1. 인스턴스 정보
 - OS: Oracle Linux 8 (RHEL 기반)
@@ -14,7 +14,7 @@ ssh ubuntu@<EC2_PUBLIC_IP>
 ## 3. 설치 스크립트 실행
 ```
 git clone <YOUR_REPO_URL>
-cd TaeoDownloader
+cd TeoDownloader
 chmod +x scripts/install_node_yt_dlp.sh
 ./scripts/install_node_yt_dlp.sh
 ```
