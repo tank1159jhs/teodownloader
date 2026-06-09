@@ -446,6 +446,69 @@ app.post('/api/download', async (req, res) => {
   }
 });
 
+// =================================
+// n8n Factory 전용 로컬 다운로드 API
+// =================================
+app.post('/api/factory/download', async (req, res) => {
+  const { url: rawUrl, projectName } = req.body;
+  if (!rawUrl) return res.status(400).json({ error: 'URL_REQUIRED' });
+  
+  const validation = validateUrl(rawUrl);
+  if (!validation.valid) return res.status(400).json({ error: 'INVALID_URL' });
+  const url = validation.normalized;
+  
+  const config = getPlatformConfig(url);
+  if (!config) return res.status(400).json({ error: 'UNSUPPORTED_DOMAIN' });
+
+  // 저장 경로 설정 (TeoVideoFactory/temp)
+  const FACTORY_TEMP_DIR = '/Users/systemi/vibecoding/TeoVideoFactory/temp';
+  if (!fs.existsSync(FACTORY_TEMP_DIR)) fs.mkdirSync(FACTORY_TEMP_DIR, { recursive: true });
+
+  const randomId = generateRandomId();
+  const timestamp = Date.now();
+  const fileName = `factory_${timestamp}_${randomId}.mp4`;
+  const localFilePath = path.join(FACTORY_TEMP_DIR, fileName);
+
+  try {
+    console.log(`[FACTORY-DL] Starting: ${url}`);
+    
+    // 1. 메타데이터 추출 (제목 등)
+    const { stdout: metadataJson } = await executeYtDlp([url, '--dump-json'], config, 45000);
+    const metadata = JSON.parse(metadataJson);
+
+    // 2. 실제 다운로드 (로컬 파일로 저장)
+    const downloadArgs = [
+      url, 
+      '-f', config.format, 
+      '-o', localFilePath, 
+      '--no-part', 
+      '--merge-output-format', 'mp4',
+      '--concurrent-fragments', '16'
+    ];
+    
+    await executeYtDlp(downloadArgs, config, DOWNLOAD_TIMEOUT);
+
+    console.log(`[FACTORY-DL] Success: ${localFilePath}`);
+    
+    res.json({
+      status: 'success',
+      video_path: localFilePath,
+      title: metadata.title,
+      duration_ms: (metadata.duration || 0) * 1000,
+      filename: fileName
+    });
+
+  } catch (err) {
+    console.error(`[FACTORY-ERR] ${err.message}`);
+    if (fs.existsSync(localFilePath)) fs.unlink(localFilePath, () => {});
+    res.status(500).json({ 
+      status: 'error', 
+      error: 'DOWNLOAD_FAILED', 
+      message: mapYtDlpErrorMessage(err.message) 
+    });
+  }
+});
+
 app.listen(PORT, () => console.log(`🚀 TEO Ultra-Fast Server on port ${PORT}`));
 process.on('uncaughtException', (err) => console.error('[UNCAUGHT]', err));
 process.on('unhandledRejection', (err) => console.error('[UNHANDLED REJECTION]', err));
