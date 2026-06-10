@@ -52,11 +52,11 @@ const PLATFORM_CONFIGS = {
   youtube: {
     domains: ['youtube.com', 'youtu.be'],
     format: 'bv+ba/b',
-    userAgent: 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36',
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
     referer: 'https://www.youtube.com/',
     useProxy: false,
     extraArgs: [
-      '--extractor-args', 'youtube:player_client=ios,android,web_embedded',
+      '--extractor-args', 'youtube:player_client=web,web_embedded,android',
       '--force-ipv4',
       '--no-playlist',
       '--no-check-certificates'
@@ -84,8 +84,7 @@ const PLATFORM_CONFIGS = {
       "--impersonate", "chrome",
       "--add-header", "Referer: https://www.douyin.com/",
       "--add-header", "Accept-Language: zh-CN,zh;q=0.9,en;q=0.8",
-      "--extractor-args", "douyin:no-watermark=true;app_id=1128",
-      "--add-header", "Cookie: stream-test-module=0"
+      "--extractor-args", "douyin:no-watermark=true;app_id=1128"
     ]
   },
   instagram: {
