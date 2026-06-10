@@ -43,8 +43,9 @@ html, body {
   position: absolute;
   top: 1.5rem;
   left: 1.5rem;
-  right: auto !important;
-  z-index: 10;
+  right: auto;
+  z-index: 100;
+  text-align: left;
 }
 
 .lang-switcher select {
