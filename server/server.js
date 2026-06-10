@@ -66,6 +66,7 @@ const PLATFORM_CONFIGS = {
     domains: ['tiktok.com'],
     format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
     useProxy: false,
+    useCookies: false,
     extraArgs: [
       '--no-playlist',
       '--impersonate', 'chrome',
