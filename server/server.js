@@ -52,11 +52,11 @@ const PLATFORM_CONFIGS = {
   youtube: {
     domains: ['youtube.com', 'youtu.be'],
     format: 'bv+ba/b',
-    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+    userAgent: 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36',
     referer: 'https://www.youtube.com/',
     useProxy: false,
     extraArgs: [
-      '--extractor-args', 'youtube:player_client=ios,android,web_embedded',
+      '--extractor-args', 'youtube:player_client=android,web',
       '--force-ipv4',
       '--no-playlist',
       '--no-check-certificates'
