@@ -56,7 +56,7 @@ const PLATFORM_CONFIGS = {
     referer: 'https://www.youtube.com/',
     useProxy: false,
     extraArgs: [
-      '--extractor-args', 'youtube:player_client=android,web',
+      '--extractor-args', 'youtube:player_client=ios,android,web_embedded',
       '--force-ipv4',
       '--no-playlist',
       '--no-check-certificates'
@@ -72,8 +72,7 @@ const PLATFORM_CONFIGS = {
       '--extractor-args', 'tiktok:api_hostname=api16-normal-c-useast1a.tiktokv.com',
       '--add-header', 'Accept-Language: en-US,en;q=0.9,ko;q=0.8',
       '--add-header', 'Referer: https://www.tiktok.com/',
-      '--add-header', 'Sec-Fetch-Mode: navigate',
-      '--add-header', 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+      '--add-header', 'Sec-Fetch-Mode: navigate'
     ]
   },
   douyin: {
@@ -94,7 +93,7 @@ const PLATFORM_CONFIGS = {
     format: 'best',
     userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1',
     referer: 'https://www.instagram.com/',
-    useProxy: false,
+    useProxy: true,
     extraArgs: ['--no-playlist']
   },
   twitter: {
@@ -181,10 +180,9 @@ async function executeYtDlp(args, config, timeout, jobId = null) {
     const cookiesPath = process.env.YTDLP_COOKIES || '/home/opc/cookies.txt';
     if (fs.existsSync(cookiesPath)) ytdlpArgs.push('--cookies', cookiesPath);
     
-    // 프록시 사용 중단 (플랫폼 차단 방지)
-    // if (process.env.YTDLP_PROXY && (!config || config.useProxy !== false)) {
-    //   ytdlpArgs.push('--proxy', process.env.YTDLP_PROXY);
-    // }
+    if (process.env.YTDLP_PROXY && config && config.useProxy === true) {
+      ytdlpArgs.push('--proxy', process.env.YTDLP_PROXY);
+    }
 
     const proc = spawn('yt-dlp', ytdlpArgs, { timeout });
     
