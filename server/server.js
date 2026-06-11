@@ -183,7 +183,12 @@ async function executeYtDlp(args, config, timeout, jobId = null) {
       ytdlpArgs.push('--proxy', process.env.YTDLP_PROXY);
     }
 
-    const proc = spawn('yt-dlp', ytdlpArgs, { timeout });
+    const env = { 
+      ...process.env, 
+      YTDLP_PLUGINS_PATH: '/home/opc/.yt-dlp/plugins' 
+    };
+
+    const proc = spawn('yt-dlp', ytdlpArgs, { timeout, env });
     
     proc.stdout.on('data', (data) => {
       const output = data.toString();
