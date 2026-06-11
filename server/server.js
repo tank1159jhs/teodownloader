@@ -62,7 +62,8 @@ const PLATFORM_CONFIGS = {
       '--cookies', '/home/opc/cookies.txt',
       '--force-ipv4',
       '--no-playlist',
-      '--no-check-certificates'
+      '--no-check-certificates',
+      '--client-certificate', ''
     ]
   },
   tiktok: {
