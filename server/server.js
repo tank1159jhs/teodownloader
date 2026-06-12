@@ -59,11 +59,12 @@ const PLATFORM_CONFIGS = {
     useProxy: true,
     useCookies: true,
     extraArgs: [
+      '--downloader', 'aria2c',
+      '--downloader-args', 'aria2c:--summary-interval=0 --max-connection-per-server=16 --min-split-size=1M',
       '--extractor-args', 'youtube:player_client=android,ios,web;pot_provider=getpot;getpot_bgutil_http_url=http://localhost:8090/get_pot',
       '--force-ipv4',
       '--no-playlist',
-      '--no-check-certificates',
-      '--concurrent-fragments', '16'
+      '--no-check-certificates'
     ]
   },
   tiktok: {
