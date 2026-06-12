@@ -58,7 +58,7 @@ const PLATFORM_CONFIGS = {
     referer: 'https://www.youtube.com/',
     useProxy: false,
     extraArgs: [
-      '--extractor-args', 'youtube:player_client=android,ios,web;pot_provider=getpot;getpot_bgutil_http_url=http://localhost:8090/rpc',
+      '--extractor-args', 'youtube:player_client=android,ios;pot_provider=getpot;getpot_bgutil_http_url=http://localhost:8090/rpc',
       '--cookies', '/home/opc/cookies.txt',
       '--force-ipv4',
       '--no-playlist',
@@ -188,7 +188,10 @@ async function executeYtDlp(args, config, timeout, jobId = null) {
       YTDLP_PLUGINS_PATH: '/home/opc/.yt-dlp/plugins' 
     };
 
-    const proc = spawn('yt-dlp', ytdlpArgs, { timeout, env });
+    const venvYtDlp = '/var/www/app/server/.venv/bin/yt-dlp';
+    const YT_DLP_BINARY = fs.existsSync(venvYtDlp) ? venvYtDlp : 'yt-dlp';
+
+    const proc = spawn(YT_DLP_BINARY, ytdlpArgs, { timeout, env });
     
     proc.stdout.on('data', (data) => {
       const output = data.toString();
