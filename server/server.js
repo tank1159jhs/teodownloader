@@ -62,7 +62,8 @@ const PLATFORM_CONFIGS = {
       '--extractor-args', 'youtube:player_client=android,ios,web;pot_provider=getpot;getpot_bgutil_http_url=http://localhost:8090/get_pot',
       '--force-ipv4',
       '--no-playlist',
-      '--no-check-certificates'
+      '--no-check-certificates',
+      '--concurrent-fragments', '16'
     ]
   },
   tiktok: {
