@@ -331,13 +331,15 @@ function serveI18nIndex(req, res) {
       const p = page === 'home' ? `/${l}/` : `/${l}/${page}`;
       return `<link rel="alternate" hreflang="${l}" href="https://teodown.com${p}">`;
     }).join('\n  ');
-    const xDefault = `<link rel="alternate" hreflang="x-default" href="https://teodown.com/${page === 'home' ? 'ko/' : 'ko/' + page}">`;
+    const xDefault = `<link rel="alternate" hreflang="x-default" href="https://teodown.com/${page === 'home' ? 'en/' : 'en/' + page}">`;
+    const canonicalPath = req.path.endsWith('/') && req.path.length > 4 ? req.path.slice(0, -1) : req.path;
+    const canonical = `<link rel="canonical" href="https://teodown.com${canonicalPath}">`;
 
     let injectedHtml = html
       .replace('<html lang="ko">', `<html lang="${lang}">`)
       .replace(/<title>.*?<\/title>/, `<title>${t.title}</title>`)
       .replace(/<meta name="description" content=".*?">/, `<meta name="description" content="${t.description}">`)
-      .replace(/<link rel="canonical".*?hreflang="en".*?>/s, `<link rel="canonical" href="https://teodown.com${req.path}">\n  ${xDefault}\n  ${hreflangTags}`)
+      .replace('<!-- SEO_TAGS -->', `${canonical}\n  ${xDefault}\n  ${hreflangTags}`)
       .replace(/<meta property="og:title" content=".*?">/, `<meta property="og:title" content="${t.title}">`)
       .replace(/<meta property="og:description" content=".*?">/, `<meta property="og:description" content="${t.description}">`)
       .replace(/<meta property="og:url" content=".*?">/, `<meta property="og:url" content="https://teodown.com${req.path}">`)
@@ -363,7 +365,7 @@ app.get(['/:lang([a-z]{2})', '/:lang([a-z]{2})/'], (req, res) => {
   res.status(404).end();
 });
 
-app.get('/', (req, res) => res.redirect('/ko/'));
+app.get('/', (req, res) => res.redirect('/en/'));
 app.use(express.static(FRONTEND_PATH));
 
 app.get('/api/progress/:id', (req, res) => {
