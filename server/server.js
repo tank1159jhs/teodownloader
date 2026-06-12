@@ -60,7 +60,7 @@ const PLATFORM_CONFIGS = {
     useCookies: true,
     extraArgs: [
       '--impersonate', 'chrome',
-      '--extractor-args', 'youtube:player_client=ios,android,web;pot_provider=bgutil:http;getpot_bgutil_http_url=http://localhost:8090/get_pot',
+      '--extractor-args', 'youtube:player_client=web,ios;pot_provider=bgutil:http;getpot_bgutil_http_url=http://localhost:8090/get_pot;pot_provider=getpot',
       '--force-ipv4',
       '--no-playlist',
       '--no-check-certificates'
