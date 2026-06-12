@@ -56,10 +56,11 @@ const PLATFORM_CONFIGS = {
     format: 'bv+ba/b',
     userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
     referer: 'https://www.youtube.com/',
-    useProxy: false,
-    useCookies: false, // 쿠키 사용 중단
+    useProxy: true,
+    useCookies: true,
     extraArgs: [
-      '--extractor-args', 'youtube:player_client=mweb,android;pot_provider=getpot;getpot_bgutil_http_url=http://localhost:8090/get_pot',
+      '--proxy', 'socks5://127.0.0.1:1080',
+      '--extractor-args', 'youtube:player_client=android,ios,web;pot_provider=getpot;getpot_bgutil_http_url=http://localhost:8090/get_pot',
       '--force-ipv4',
       '--no-playlist',
       '--no-check-certificates'
@@ -68,9 +69,10 @@ const PLATFORM_CONFIGS = {
   tiktok: {
     domains: ['tiktok.com'],
     format: 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
-    useProxy: false,
+    useProxy: true,
     useCookies: false,
     extraArgs: [
+      '--proxy', 'socks5://127.0.0.1:1080',
       '--no-playlist',
       '--impersonate', 'chrome'
     ]
