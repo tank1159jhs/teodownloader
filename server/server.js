@@ -53,7 +53,7 @@ function setCache(url, data) {
 const PLATFORM_CONFIGS = {
   youtube: {
     domains: ['youtube.com', 'youtu.be'],
-    format: 'bv+ba/b',
+    format: 'best[ext=mp4]/best', // 머징 없는 단일 파일 포맷 우선
     userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
     referer: 'https://www.youtube.com/',
     useProxy: true,
@@ -63,10 +63,7 @@ const PLATFORM_CONFIGS = {
       '--force-ipv4',
       '--no-playlist',
       '--no-check-certificates',
-      '--concurrent-fragments', '16',
-      '--buffer-size', '1M',
-      '--retries', '10',
-      '--fragment-retries', '10'
+      '--concurrent-fragments', '5' // 프록시 부하 방지를 위해 조정
     ]
   },
   tiktok: {
